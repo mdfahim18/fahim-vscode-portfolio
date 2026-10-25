@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+:root {
+  --vs-color: #1e1e1e;
+  --vs-activity-bar-bg: #2d2d30;
+  --vs-activity-bar-hover-bg: #3c3c40;
+  --vs-activity-bar-active: #007acc;
+  --vs-sidebar-bg: #2a2d2f;
+  --vs-sidebar-item-hover-bg: #2d2d30;
+  --vs-sidebar-item-active: #007acc;
+  --vs-editor-bg: #1e1e1e;
+  --vs-editor-foreground: #d4d4d4;
+  --vs-editor-cursor: #aeafad;
+  --vs-panel-bg: #1e1e1e;
+  --vs-tab-bg: #2d2d30;
+  --vs-tab-hover-bg: #3c3c40;
+  --vs-tab-active-bg: #1e1e1e;
+  --vs-border: #3c3c40;
+  --vs-terminal-bg: #000000;
+}
+
+@theme inline {
+  --color-background: var(--vs-color);
+  --color-foreground: var(--vs-editor-foreground);
+}
+
+body {
+  background: var(--vs-color);
+  color: var(--vs-editor-foreground);
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', monospace;
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+}
