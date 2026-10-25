@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# fahim-vscode-portfolio
+
+A production-level developer portfolio that looks and behaves **exactly like Visual Studio Code**. Visitors browse it through a simulated IDE: a resizable multi-pane layout, a real code editor, an interactive terminal, and an AI assistant panel on the right.
+
+## Features
+
+- **VS Code UI** — Activity bar, file explorer sidebar, editor area, bottom terminal, and AI chat panel, all driven by resizable panes.
+- **Real editor** — Monaco (the engine behind VS Code) with a tab system.
+- **Virtual file system** — Files are data, not server files. `src/data/files.ts` maps filenames to their stringified source.
+- **Interactive terminal** — xterm.js with custom commands like `open contact.ts` that open files in the editor.
+- **AI agent** — A RAG-style chat panel that answers questions strictly from `src/data/resume.ts` via a streaming API route.
+- **Mobile mode** — On small screens the layout collapses into a bottom navigation bar with full-screen panel transitions.
+- **Animations** — Framer Motion transitions, typewriter effects, and syntax-highlighted code blocks.
+
+## Tech Stack
+
+| Layer | Choice |
+| --- | --- |
+| Framework | Next.js (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS + shadcn/ui |
+| Layout | `react-resizable-panels` |
+| Editor | `@monaco-editor/react` |
+| Terminal | `xterm.js` + `xterm-addon-fit` |
+| State | Zustand |
+| Animation | Framer Motion |
+| AI | Vercel AI SDK + OpenAI API |
+| Icons | Lucide React + custom VS Code SVGs |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# install dependencies
+npm install
+
+# start the dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other scripts:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build   # production build
+npm start       # run the production build
+npm run lint    # eslint
+```
 
-## Learn More
+### AI chat (Phase 4)
 
-To learn more about Next.js, take a look at the following resources:
+Create `.env.local` and add your key. The file is git-ignored by default:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+OPENAI_API_KEY=sk-...
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+src/
+├── app/                 # App Router entry, layout, global styles
+├── components/
+│   ├── activity-bar.tsx # Left icon rail
+│   ├── sidebar.tsx      # File explorer
+│   ├── editor-area.tsx  # Monaco + tabs
+│   ├── terminal-panel.tsx
+│   ├── ai-panel.tsx     # AI chat
+│   └── vscode-layout.tsx# Resizable pane tree
+└── data/
+    ├── files.ts         # Virtual file system (Phase 2)
+    └── resume.ts        # Source of truth for the AI (Phase 4)
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## How It Works
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Virtual file system.** There is no backend file system. A `data/files.ts` object maps filenames to code strings.
+
+**Zustand store.** Holds `activeFile`, `openTabs`, and `terminalHistory`. Terminal commands update the store, which automatically opens the target file in the editor.
+
+**AI agent.** An API route builds context from `data/resume.ts` and streams an OpenAI response, so answers stay grounded in the resume rather than the model's imagination.
+
+## Roadmap
+
+- [x] Phase 1 — Next.js setup & resizable VS Code layout
+- [ ] Phase 2 — Virtual file system & Monaco editor integration
+- [ ] Phase 3 — xterm.js terminal & custom commands
+- [ ] Phase 4 — AI chat panel & Vercel AI SDK integration
+- [ ] Phase 5 — Mobile responsiveness (bottom nav, fullscreen views)
+- [ ] Phase 6 — Polish: animations, syntax highlighting, typewriter effects
+
+## License
+
+MIT — see [LICENSE](./LICENSE).
