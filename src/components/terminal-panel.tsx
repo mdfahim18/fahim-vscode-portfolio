@@ -3,16 +3,20 @@
 import { Terminal as TerminalIcon, Trash2 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import type { Terminal } from "xterm";
+import { runCommand, saveToHistory, loadHistory } from "@/lib/terminal-commands";
+
+const PROMPT = "\x1b[32mfahim\x1b[0m:\x1b[34m~/portfolio\x1b[0m$ ";
 
 export function TerminalPanel() {
-  const terminalRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const termRef = useRef<Terminal | null>(null);
 
   useEffect(() => {
     let disposed = false;
+    let currentLine = "";
 
     const initTerminal = async () => {
-      if (!terminalRef.current || termRef.current) return;
+      if (!containerRef.current || termRef.current) return;
       if (typeof window === "undefined") return;
 
       try {
@@ -21,53 +25,98 @@ export function TerminalPanel() {
 
         const term = new XTerm({
           theme: {
-            background: "#000000",
-            foreground: "#00ff00",
-            cursor: "#00ff00",
+            background: "#1e1e1e",
+            foreground: "#d4d4d4",
+            cursor: "#aeafad",
           },
           fontSize: 13,
-          fontFamily: "monospace",
+          fontFamily: "'Cascadia Code', monospace",
+          cursorBlink: true,
         });
+        termRef.current = term;
+        term.open(containerRef.current!);
+        term.focus();
 
-        if (!disposed) {
-          termRef.current = term;
-          term.open(terminalRef.current);
-          term.writeln("Welcome to Fahim's VS Code Terminal\r\n$ ");
-        }
+        containerRef.current!.addEventListener("click", () => term.focus());
+
+        term.writeln("\x1b[2mWelcome to Fahim's VS Code Terminal — type \x1b[32mhelp\x1b[0m to begin");
+        term.write("\r\n");
+        term.write(PROMPT);
+
+        term.onKey((e) => {
+          const { domEvent } = e;
+          const key = domEvent.key;
+
+          if (key === "\r") {
+            domEvent.preventDefault();
+            term.write("\r\n");
+            saveToHistory(currentLine);
+            const result = runCommand(currentLine);
+            if (result.clear) {
+              term.reset();
+            } else {
+              result.output.forEach((l) => term.writeln(l));
+              term.write("\r\n");
+            }
+            currentLine = "";
+            term.write(PROMPT);
+            return;
+          }
+
+          if (key === "Backspace") {
+            domEvent.preventDefault();
+            if (currentLine.length > 0) {
+              currentLine = currentLine.slice(0, -1);
+              term.write("\b \b");
+            }
+            return;
+          }
+
+          if (key.length === 1 && key >= " " && key <= "~") {
+            currentLine += key;
+            term.write(key);
+          }
+
+          if (key === "\x03") {
+            domEvent.preventDefault();
+            term.write("^C\r\n");
+            currentLine = "";
+            term.write(PROMPT);
+          }
+        });
       } catch (err) {
-        console.error("Failed to load xterm:", err);
+        console.error("xterm init error:", err);
       }
     };
 
     initTerminal();
-
     return () => {
       disposed = true;
     };
   }, []);
 
   const clearTerminal = () => {
-    termRef.current?.clear();
+    if (termRef.current) {
+      termRef.current.reset();
+    }
   };
 
   return (
-    <div className="h-full bg-vs-terminal-bg border-t border-vs-border flex flex-col">
-      <div className="flex items-center justify-between px-3 py-1 bg-vs-tab-bg border-b border-vs-border text-xs text-gray-400">
-        <span className="flex items-center gap-1">
+    <div className="h-full flex flex-col">
+      <div className="flex items-center justify-between px-3 py-1 bg-[#2d2d30] border-b border-[#3c3c40] text-xs text-gray-400">
+        <span className="flex items-center gap-2">
           <TerminalIcon size={12} />
-          <span>TERMINAL</span>
+          <span className="text-white text-sm">TERMINAL</span>
         </span>
-        <div className="flex items-center gap-1">
-          <button
-            onClick={clearTerminal}
-            className="text-gray-400 hover:text-white"
-            aria-label="Clear terminal"
-          >
-            <Trash2 size={12} />
-          </button>
-        </div>
+        <button
+          onClick={clearTerminal}
+          className="text-gray-400 hover:text-white"
+          aria-label="Clear terminal"
+        >
+          <Trash2 size={12} />
+        </button>
       </div>
-      <div ref={terminalRef} className="flex-1 p-2 overflow-hidden" />
+      <div ref={containerRef} className="flex-1 overflow-hidden cursor-text" />
     </div>
   );
 }
