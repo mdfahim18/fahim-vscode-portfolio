@@ -3,7 +3,11 @@
 import { Terminal as TerminalIcon, Trash2 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import type { Terminal } from "xterm";
-import { runCommand, saveToHistory, loadHistory } from "@/lib/terminal-commands";
+import {
+  runCommand,
+  saveToHistory,
+  loadHistory,
+} from "@/lib/terminal-commands";
 
 const PROMPT = "\x1b[32mfahim\x1b[0m:\x1b[34m~/portfolio\x1b[0m$ ";
 
@@ -39,7 +43,9 @@ export function TerminalPanel() {
 
         containerRef.current!.addEventListener("click", () => term.focus());
 
-        term.writeln("\x1b[2mWelcome to Fahim's VS Code Terminal — type \x1b[32mhelp\x1b[0m to begin");
+        term.writeln(
+          "\x1b[2mWelcome to Fahim's VS Code Terminal — type \x1b[32mhelp\x1b[0m to begin"
+        );
         term.write("\r\n");
         term.write(PROMPT);
 
