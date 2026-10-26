@@ -129,10 +129,13 @@ export function AIAssistantPanel() {
             <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-vs-tab-hover-bg">
               <Bot size={13} className="text-gray-200" />
             </div>
-            <div className="flex items-center gap-1 rounded bg-vs-tab-bg px-3 py-2">
-              <span className="typing-dot" />
-              <span className="typing-dot" />
-              <span className="typing-dot" />
+            <div className="flex items-center gap-1.5 rounded bg-vs-tab-bg px-3 py-2 text-xs text-gray-400">
+              <span>Typing</span>
+              <div className="flex items-center gap-0.5">
+                <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-bounce"></span>
+                <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+              </div>
             </div>
           </div>
         )}
