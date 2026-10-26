@@ -41,7 +41,7 @@ export function AIAssistantPanel() {
     }
   }, [messages, isTyping]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const text = input.trim();
     if (!text || isTyping) return;
 
@@ -52,21 +52,78 @@ export function AIAssistantPanel() {
       timestamp: now(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    const history = [...messages, userMessage];
+    setMessages(history);
     setInput("");
     setIsTyping(true);
 
-    setTimeout(() => {
-      const aiMessage: Message = {
-        id: `ai-${Date.now()}`,
-        from: "ai",
-        text: "Thanks for asking! I'm still learning about Fahim's projects. 😄",
-        timestamp: now(),
-      };
-      setMessages((prev) => [...prev, aiMessage]);
+    const aiId = `ai-${Date.now()}`;
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: history.map((m) => ({
+            role: m.from === "user" ? "user" : "assistant",
+            content: m.text,
+          })),
+        }),
+      });
+
+      if (!res.ok || !res.body) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error ?? "Request failed");
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let full = "";
+      let started = false;
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        full += decoder.decode(value, { stream: true });
+
+        if (!started) {
+          started = true;
+          setIsTyping(false);
+          setMessages((prev) => [
+            ...prev,
+            { id: aiId, from: "ai", text: full, timestamp: now() },
+          ]);
+        } else {
+          setMessages((prev) =>
+            prev.map((m) => (m.id === aiId ? { ...m, text: full } : m))
+          );
+        }
+      }
+
+      if (!started) {
+        setIsTyping(false);
+        setMessages((prev) => [
+          ...prev,
+          { id: aiId, from: "ai", text: "(no response)", timestamp: now() },
+        ]);
+      }
+    } catch (err) {
+      setIsTyping(false);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `ai-err-${Date.now()}`,
+          from: "ai",
+          text:
+            err instanceof Error ? err.message : "Sorry, something went wrong.",
+          timestamp: now(),
+        },
+      ]);
+    } finally {
       setIsTyping(false);
       inputRef.current?.focus();
-    }, 1000);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
