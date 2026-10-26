@@ -31,16 +31,20 @@ export async function POST(req: Request) {
     });
 
     const result = streamText({
-      model: google("gemini-2.0-flash"),
+      model: google("gemini-flash-lite-latest"),
       system: SYSTEM_PROMPT,
       messages,
+      maxRetries: 4,
     });
 
     return result.toTextStreamResponse();
   } catch (err) {
     console.error("chat api error:", err);
     return Response.json(
-      { error: "Something went wrong. Please try again." },
+      {
+        error:
+          "The AI server is currently unavailable after multiple retries. Please try again later.",
+      },
       { status: 500 }
     );
   }

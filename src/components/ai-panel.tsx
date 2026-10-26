@@ -17,12 +17,18 @@ function now(): string {
   });
 }
 
+const TIMEOUT_MESSAGE =
+  "Sorry, the AI server is currently experiencing high demand or timed out. Please try again later.";
+
+const ABORT_MESSAGE =
+  "The AI server is taking too long to respond. Please try again.";
+
 const initialMessages: Message[] = [
   {
     id: "init-1",
     from: "ai",
     text: "Hello! I'm Fahim's AI assistant. Ask me anything about his portfolio!",
-    timestamp: now(),
+    timestamp: "Welcome",
   },
 ];
 
@@ -58,11 +64,14 @@ export function AIAssistantPanel() {
     setIsTyping(true);
 
     const aiId = `ai-${Date.now()}`;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
 
     try {
-      const res = await fetch("/api/chat", {
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
         body: JSON.stringify({
           messages: history.map((m) => ({
             role: m.from === "user" ? "user" : "assistant",
@@ -71,12 +80,15 @@ export function AIAssistantPanel() {
         }),
       });
 
-      if (!res.ok || !res.body) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error ?? "Request failed");
+      if (!response.ok) {
+        throw new Error("Request failed");
       }
 
-      const reader = res.body.getReader();
+      if (!response.body) {
+        throw new Error("No response body");
+      }
+
+      const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let full = "";
       let started = false;
@@ -102,25 +114,22 @@ export function AIAssistantPanel() {
       }
 
       if (!started) {
-        setIsTyping(false);
-        setMessages((prev) => [
-          ...prev,
-          { id: aiId, from: "ai", text: "(no response)", timestamp: now() },
-        ]);
+        throw new Error("Empty response");
       }
     } catch (err) {
-      setIsTyping(false);
+      const isAbort =
+        err instanceof DOMException && err.name === "AbortError";
       setMessages((prev) => [
         ...prev,
         {
           id: `ai-err-${Date.now()}`,
           from: "ai",
-          text:
-            err instanceof Error ? err.message : "Sorry, something went wrong.",
+          text: isAbort ? ABORT_MESSAGE : TIMEOUT_MESSAGE,
           timestamp: now(),
         },
       ]);
     } finally {
+      clearTimeout(timeoutId);
       setIsTyping(false);
       inputRef.current?.focus();
     }
@@ -174,9 +183,11 @@ export function AIAssistantPanel() {
               >
                 {msg.text}
               </div>
-              <span className="mt-0.5 px-1 text-[10px] text-gray-500">
-                {msg.timestamp}
-              </span>
+              {msg.timestamp && (
+                <span className="mt-0.5 px-1 text-[10px] text-gray-500">
+                  {msg.timestamp}
+                </span>
+              )}
             </div>
           </div>
         ))}
