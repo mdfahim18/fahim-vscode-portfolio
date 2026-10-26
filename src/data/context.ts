@@ -1,5 +1,5 @@
 export const FAHIM_CONTEXT = `
-Name: Fahim Chowdhury
+Name: Mahmudul Amin Fahim
 Role: Full Stack Developer
 Location: Bangladesh (UTC+6)
 Email: fahim@example.com

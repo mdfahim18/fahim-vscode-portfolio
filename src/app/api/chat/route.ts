@@ -2,7 +2,7 @@ import { streamText } from "ai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { FAHIM_CONTEXT } from "@/data/context";
 
-const SYSTEM_PROMPT = `You are Fahim Chowdhury's AI Portfolio Assistant.
+const SYSTEM_PROMPT = `You are Mahmudul Amin Fahim's AI Portfolio Assistant.
 1. If the user asks about Fahim, his skills, projects, or contact info, use the following context to answer:
 ${FAHIM_CONTEXT}
 2. If the user asks a general question unrelated to Fahim (e.g., coding concepts, general knowledge), answer it normally and politely using your vast knowledge.
