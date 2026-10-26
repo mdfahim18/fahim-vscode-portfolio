@@ -27,7 +27,7 @@ export default function VSCodePage() {
         </div>
 
         {/* Terminal – fixed height at bottom */}
-        <div className="h-12 border-t border-[#3c3c3c]">
+        <div className="h-64 border-t border-[#3c3c3c]">
           <TerminalPanel />
         </div>
       </div>
