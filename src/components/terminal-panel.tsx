@@ -3,11 +3,7 @@
 import { Terminal as TerminalIcon, Trash2 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import type { Terminal } from "xterm";
-import {
-  runCommand,
-  saveToHistory,
-  loadHistory,
-} from "@/lib/terminal-commands";
+import { runCommand, saveToHistory } from "@/lib/terminal-commands";
 
 const PROMPT = "\x1b[32mfahim\x1b[0m:\x1b[34m~/portfolio\x1b[0m$ ";
 
@@ -18,16 +14,24 @@ export function TerminalPanel() {
   useEffect(() => {
     let disposed = false;
     let currentLine = "";
+    let term: Terminal | null = null;
+    let clickHandler: (() => void) | null = null;
+    let containerEl: HTMLDivElement | null = null;
 
     const initTerminal = async () => {
-      if (!containerRef.current || termRef.current) return;
       if (typeof window === "undefined") return;
 
       try {
         await import("xterm/css/xterm.css");
         const { Terminal: XTerm } = await import("xterm");
 
-        const term = new XTerm({
+        // Re-check after async: the component may have unmounted or remounted
+        // (React Strict Mode / responsive panel remount) while we awaited.
+        const el = containerRef.current;
+        if (disposed || !el || termRef.current) return;
+        containerEl = el;
+
+        term = new XTerm({
           theme: {
             background: "#1e1e1e",
             foreground: "#d4d4d4",
@@ -38,10 +42,11 @@ export function TerminalPanel() {
           cursorBlink: true,
         });
         termRef.current = term;
-        term.open(containerRef.current!);
+        term.open(el);
         term.focus();
 
-        containerRef.current!.addEventListener("click", () => term.focus());
+        clickHandler = () => term?.focus();
+        el.addEventListener("click", clickHandler);
 
         term.writeln(
           "\x1b[2mWelcome to Fahim's VS Code Terminal — type \x1b[32mhelp\x1b[0m to begin"
@@ -55,17 +60,17 @@ export function TerminalPanel() {
 
           if (key === "\r") {
             domEvent.preventDefault();
-            term.write("\r\n");
+            term!.write("\r\n");
             saveToHistory(currentLine);
             const result = runCommand(currentLine);
             if (result.clear) {
-              term.reset();
+              term!.reset();
             } else {
-              result.output.forEach((l) => term.writeln(l));
-              term.write("\r\n");
+              result.output.forEach((l) => term!.writeln(l));
+              term!.write("\r\n");
             }
             currentLine = "";
-            term.write(PROMPT);
+            term!.write(PROMPT);
             return;
           }
 
@@ -73,21 +78,21 @@ export function TerminalPanel() {
             domEvent.preventDefault();
             if (currentLine.length > 0) {
               currentLine = currentLine.slice(0, -1);
-              term.write("\b \b");
+              term!.write("\b \b");
             }
             return;
           }
 
           if (key.length === 1 && key >= " " && key <= "~") {
             currentLine += key;
-            term.write(key);
+            term!.write(key);
           }
 
           if (key === "\x03") {
             domEvent.preventDefault();
-            term.write("^C\r\n");
+            term!.write("^C\r\n");
             currentLine = "";
-            term.write(PROMPT);
+            term!.write(PROMPT);
           }
         });
       } catch (err) {
@@ -96,8 +101,16 @@ export function TerminalPanel() {
     };
 
     initTerminal();
+
     return () => {
       disposed = true;
+      if (clickHandler && containerEl) {
+        containerEl.removeEventListener("click", clickHandler);
+      }
+      term?.dispose();
+      if (termRef.current === term) {
+        termRef.current = null;
+      }
     };
   }, []);
 
