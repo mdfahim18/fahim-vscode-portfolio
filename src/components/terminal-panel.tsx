@@ -2,7 +2,7 @@
 
 import { Terminal as TerminalIcon, Trash2 } from "lucide-react";
 import { useEffect, useRef } from "react";
-import type { Terminal } from "xterm";
+import type { Terminal } from "@xterm/xterm";
 import { runCommand, saveToHistory } from "@/lib/terminal-commands";
 
 const PROMPT = "\x1b[32mfahim\x1b[0m:\x1b[34m~/portfolio\x1b[0m$ ";
@@ -23,9 +23,9 @@ export function TerminalPanel() {
       if (typeof window === "undefined") return;
 
       try {
-        await import("xterm/css/xterm.css");
-        const { Terminal: XTerm } = await import("xterm");
-        const { FitAddon } = await import("xterm-addon-fit");
+        await import("@xterm/xterm/css/xterm.css");
+        const { Terminal: XTerm } = await import("@xterm/xterm");
+        const { FitAddon } = await import("@xterm/addon-fit");
 
         const el = containerRef.current;
         if (disposed || !el || termRef.current) return;
@@ -157,7 +157,7 @@ export function TerminalPanel() {
       </div>
       <div
         ref={containerRef}
-        className="w-full flex-1 min-h-0 overflow-hidden cursor-text"
+        className="w-full flex-1 min-h-0 overflow-hidden cursor-text [&_.xterm]:p-2"
       />
     </div>
   );
