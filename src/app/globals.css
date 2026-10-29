@@ -60,3 +60,9 @@ body {
 .typing-dot:nth-child(3) {
   animation-delay: 0.3s;
 }
+
+.monaco-search-highlight {
+  background-color: #515c6a !important; /* VS Code dark theme search highlight */
+  border: 1px solid #f8c555 !important; /* VS Code active match border */
+  border-radius: 2px;
+}
