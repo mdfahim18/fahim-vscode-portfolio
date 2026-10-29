@@ -57,7 +57,7 @@ export default function VSCodePage() {
               maxSize="30"
               className="overflow-hidden bg-[#251e20] border-r border-[#3c3c3c]"
             >
-              <Sidebar />
+              <Sidebar onClose={() => setIsSidebarOpen(false)} />
             </Panel>
             <Separator className={hSeparator} />
           </>

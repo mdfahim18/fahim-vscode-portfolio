@@ -16,7 +16,7 @@ function getFileColor(name: string) {
   return fileIcons[ext] ?? "text-gray-400";
 }
 
-export function Sidebar() {
+export function Sidebar({ onClose }: { onClose: () => void }) {
   const activeFile = useEditorStore((s) => s.activeFile);
   const openFile = useEditorStore((s) => s.openFile);
 
@@ -27,8 +27,10 @@ export function Sidebar() {
           Explorer
         </span>
         <button
+          onClick={onClose}
           className="text-gray-500 hover:text-white text-xs"
           title="Collapse Sidebar"
+          aria-label="Close sidebar"
         >
           <X size={12} />
         </button>
