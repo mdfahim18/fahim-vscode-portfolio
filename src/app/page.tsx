@@ -5,6 +5,7 @@ import { Group, Panel, Separator } from "react-resizable-panels";
 import { ActivityBar } from "@/components/activity-bar";
 import { Sidebar } from "@/components/sidebar";
 import { SearchSidebar } from "@/components/search-sidebar";
+import { SourceControlSidebar } from "@/components/source-control-sidebar";
 import { PlaceholderSidebar } from "@/components/placeholder-sidebar";
 import { EditorArea } from "@/components/editor-area";
 import { TerminalPanel } from "@/components/terminal-panel";
@@ -54,6 +55,8 @@ export default function VSCodePage() {
         return <Sidebar onClose={closeSidebar} />;
       case "search":
         return <SearchSidebar onClose={closeSidebar} />;
+      case "git":
+        return <SourceControlSidebar onClose={closeSidebar} />;
       default:
         return (
           <PlaceholderSidebar
