@@ -15,10 +15,10 @@ export const developer = {
   role: "Full Stack Developer",
   tagline: "I build production-grade web apps with Next.js & TypeScript.",
   location: "Bangladesh",
-  email: "fahim@example.com",
+  email: "mahmudulaminfahim@gmail.com",
   socials: {
     github: "https://github.com/mdfahim18",
-    linkedin: "https://linkedin.com/in/mdfahim18",
+    linkedin: "https://www.linkedin.com/in/mahmudulaminfahim/",
     twitter: "https://twitter.com/mdfahim18",
   },
 } as const;
@@ -148,7 +148,7 @@ export default projects;
 }
 
 export const contact = {
-  email: "fahim@example.com",
+  email: "mahmudulaminfahim@gmail.com",
   location: "Bangladesh (UTC+6)",
   availability: "Available for freelance & full-time",
 };

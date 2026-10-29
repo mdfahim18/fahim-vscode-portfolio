@@ -66,10 +66,11 @@ const PROJECTS: CommandResult = {
 const CONTACT: CommandResult = {
   output: [
     `${cyan}Contact${reset}`,
-    `  Email    : fahim@example.com`,
+    `  Email    : mahmudulaminfahim@gmail.com`,
     `  Location : Bangladesh (UTC+6)`,
     `  Status   : ${green}Available for freelance & full-time${reset}`,
     `  GitHub   : https://github.com/mdfahim18`,
+    `  LinkedIn : https://www.linkedin.com/in/mahmudulaminfahim/`,
   ],
 };
 
@@ -98,7 +99,7 @@ const HIRE_EGG: CommandResult = {
     `${reset}`,
     "",
     `${green}Access granted. Let's build something great together.${reset}`,
-    `${dim}Ping him at fahim@example.com — response time < 24h.${reset}`,
+    `${dim}Ping him at mahmudulaminfahim@gmail.com — response time < 24h.${reset}`,
   ],
 };
 

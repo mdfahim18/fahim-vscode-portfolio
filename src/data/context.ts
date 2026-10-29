@@ -2,9 +2,9 @@ export const FAHIM_CONTEXT = `
 Name: Mahmudul Amin Fahim
 Role: Full Stack Developer
 Location: Bangladesh (UTC+6)
-Email: fahim@example.com
+Email: mahmudulaminfahim@gmail.com
 GitHub: https://github.com/mdfahim18
-LinkedIn: https://linkedin.com/in/mdfahim18
+LinkedIn: https://www.linkedin.com/in/mahmudulaminfahim/
 Availability: Open to freelance & full-time opportunities
 
 Summary:
