@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import { Group, Panel, Separator } from "react-resizable-panels";
 import { ActivityBar } from "@/components/activity-bar";
 import { Sidebar } from "@/components/sidebar";
+import { SearchSidebar } from "@/components/search-sidebar";
+import { PlaceholderSidebar } from "@/components/placeholder-sidebar";
 import { EditorArea } from "@/components/editor-area";
 import { TerminalPanel } from "@/components/terminal-panel";
 import { AIAssistantPanel } from "@/components/ai-panel";
+import { useUIStore, type SidebarView } from "@/store/ui-store";
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -20,8 +23,19 @@ function useMediaQuery(query: string) {
   return matches;
 }
 
+const VIEW_TITLES: Record<SidebarView, string> = {
+  explorer: "Explorer",
+  search: "Search",
+  git: "Source Control",
+  extensions: "Extensions",
+  settings: "Settings",
+};
+
 export default function VSCodePage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const isSidebarOpen = useUIStore((s) => s.isSidebarOpen);
+  const activeSidebarView = useUIStore((s) => s.activeSidebarView);
+  const closeSidebar = useUIStore((s) => s.closeSidebar);
+
   const isTablet = useMediaQuery("(min-width: 768px)");
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
@@ -34,13 +48,26 @@ export default function VSCodePage() {
   const vSeparator =
     "h-1 bg-[#3c3c3c] hover:bg-blue-500 transition-colors cursor-row-resize";
 
+  const renderSidebarContent = () => {
+    switch (activeSidebarView) {
+      case "explorer":
+        return <Sidebar onClose={closeSidebar} />;
+      case "search":
+        return <SearchSidebar onClose={closeSidebar} />;
+      default:
+        return (
+          <PlaceholderSidebar
+            title={VIEW_TITLES[activeSidebarView]}
+            onClose={closeSidebar}
+          />
+        );
+    }
+  };
+
   return (
     <div className="h-screen w-full overflow-hidden overflow-x-hidden flex">
       <div className="w-12 shrink-0 bg-[#1e1e1e] border-r border-[#3c3c3c]">
-        <ActivityBar
-          isSidebarOpen={isSidebarOpen}
-          toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-        />
+        <ActivityBar />
       </div>
 
       <Group
@@ -57,7 +84,7 @@ export default function VSCodePage() {
               maxSize="30"
               className="overflow-hidden bg-[#251e20] border-r border-[#3c3c3c]"
             >
-              <Sidebar onClose={() => setIsSidebarOpen(false)} />
+              {renderSidebarContent()}
             </Panel>
             <Separator className={hSeparator} />
           </>

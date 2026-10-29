@@ -1,35 +1,37 @@
 "use client";
 
 import { FileText, Search, GitBranch, Package, Settings } from "lucide-react";
+import { useUIStore, type SidebarView } from "@/store/ui-store";
 
-interface ActivityBarProps {
-  isSidebarOpen: boolean;
-  toggleSidebar: () => void;
+interface Item {
+  id: SidebarView;
+  label: string;
+  icon: typeof FileText;
 }
 
-const items = [
-  { icon: FileText, label: "Explorer" },
-  { icon: Search, label: "Search" },
-  { icon: GitBranch, label: "Git" },
-  { icon: Package, label: "Extensions" },
-  { icon: Settings, label: "Settings" },
+const items: Item[] = [
+  { id: "explorer", label: "Explorer", icon: FileText },
+  { id: "search", label: "Search", icon: Search },
+  { id: "git", label: "Source Control", icon: GitBranch },
+  { id: "extensions", label: "Extensions", icon: Package },
+  { id: "settings", label: "Settings", icon: Settings },
 ];
 
-export function ActivityBar({
-  isSidebarOpen,
-  toggleSidebar,
-}: ActivityBarProps) {
+export function ActivityBar() {
+  const isSidebarOpen = useUIStore((s) => s.isSidebarOpen);
+  const activeSidebarView = useUIStore((s) => s.activeSidebarView);
+  const toggleSidebar = useUIStore((s) => s.toggleSidebar);
+
   return (
     <div className="h-full bg-vs-activity-bar-bg flex flex-col items-center pt-4 border-r border-vs-border">
       {items.map((item) => {
-        const isExplorer = item.label === "Explorer";
-        const active = isExplorer && isSidebarOpen;
+        const active = isSidebarOpen && activeSidebarView === item.id;
 
         return (
           <button
-            key={item.label}
+            key={item.id}
             type="button"
-            onClick={isExplorer ? toggleSidebar : undefined}
+            onClick={() => toggleSidebar(item.id)}
             className={`relative flex h-12 w-12 cursor-pointer items-center justify-center rounded ${
               active
                 ? "bg-vs-activity-bar-active text-white"
