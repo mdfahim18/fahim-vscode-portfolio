@@ -58,7 +58,6 @@ export function TerminalPanel() {
         clickHandler = () => term?.focus();
         el.addEventListener("click", clickHandler);
 
-        // Keep the terminal sized to its container (panel resizing, layout changes)
         resizeObserver = new ResizeObserver(() => {
           if (disposed) return;
           try {
@@ -93,8 +92,9 @@ export function TerminalPanel() {
             }
 
             currentLine = "";
-            term!.scrollToBottom();
             term!.write(PROMPT);
+            term!.scrollToBottom();
+            setTimeout(() => term?.scrollToBottom(), 10);
             return;
           }
 
@@ -157,7 +157,7 @@ export function TerminalPanel() {
       </div>
       <div
         ref={containerRef}
-        className="w-full flex-1 min-h-0 overflow-hidden p-2 cursor-text"
+        className="w-full flex-1 min-h-0 overflow-hidden cursor-text"
       />
     </div>
   );
