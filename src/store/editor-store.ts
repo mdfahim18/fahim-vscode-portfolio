@@ -1,15 +1,23 @@
 import { create } from "zustand";
 import { files, fileNames } from "@/data/files";
 
+export interface SearchTarget {
+  file: string;
+  line: number;
+  query: string;
+}
+
 interface EditorState {
   openTabs: string[];
   activeFile: string | null;
   dirtyTabs: Set<string>;
   contents: Record<string, string>;
+  searchTarget: SearchTarget | null;
   openFile: (name: string) => void;
   closeTab: (name: string) => void;
   setActiveFile: (name: string) => void;
   updateContent: (name: string, value: string) => void;
+  setSearchTarget: (target: SearchTarget | null) => void;
 }
 
 export const useEditorStore = create<EditorState>((set) => ({
@@ -19,6 +27,7 @@ export const useEditorStore = create<EditorState>((set) => ({
   contents: Object.fromEntries(
     Object.entries(files).map(([name, file]) => [name, file.content])
   ),
+  searchTarget: null,
 
   openFile: (name) =>
     set((state) => {
@@ -46,4 +55,6 @@ export const useEditorStore = create<EditorState>((set) => ({
       contents: { ...state.contents, [name]: value },
       dirtyTabs: new Set(state.dirtyTabs).add(name),
     })),
+
+  setSearchTarget: (target) => set({ searchTarget: target }),
 }));

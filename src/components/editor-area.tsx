@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
+import type { editor } from "monaco-editor";
 import { FileText, X, Circle } from "lucide-react";
 import { useEditorStore } from "@/store/editor-store";
 import { files } from "@/data/files";
@@ -32,6 +34,62 @@ export function EditorArea() {
   const setActiveFile = useEditorStore((s) => s.setActiveFile);
   const closeTab = useEditorStore((s) => s.closeTab);
   const updateContent = useEditorStore((s) => s.updateContent);
+  const searchTarget = useEditorStore((s) => s.searchTarget);
+
+  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+  const decorationsRef = useRef<editor.IEditorDecorationsCollection | null>(
+    null
+  );
+
+  // Handle search-result navigation: reveal the line and highlight matches.
+  useEffect(() => {
+    const instance = editorRef.current;
+    if (!instance) return;
+
+    // Always clear previous highlights when the target or file changes.
+    decorationsRef.current?.clear();
+    decorationsRef.current = null;
+
+    if (!searchTarget || searchTarget.file !== activeFile) return;
+
+    // Give Monaco time to swap in the new file's model before decorating.
+    const timer = setTimeout(() => {
+      const ed = editorRef.current;
+      if (!ed) return;
+
+      const model = ed.getModel();
+      if (!model) return;
+
+      const query = searchTarget.query.trim();
+      if (query !== "") {
+        const matches = model.findMatches(
+          query,
+          false,
+          false,
+          false,
+          null,
+          false
+        );
+
+        const decorations: editor.IModelDeltaDecoration[] = matches.map(
+          (match) => ({
+            range: match.range,
+            options: {
+              inlineClassName: "monaco-search-highlight",
+            },
+          })
+        );
+
+        decorationsRef.current = ed.createDecorationsCollection(decorations);
+      }
+
+      ed.revealLineInCenter(searchTarget.line);
+      ed.setPosition({ lineNumber: searchTarget.line, column: 1 });
+      ed.focus();
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, [searchTarget, activeFile]);
 
   const active = activeFile ? files[activeFile] : undefined;
 
@@ -77,6 +135,19 @@ export function EditorArea() {
             onChange={(value) =>
               activeFile && updateContent(activeFile, value ?? "")
             }
+            onMount={(ed) => {
+              editorRef.current = ed;
+
+              // Clear search highlights on interaction, like VS Code.
+              const clearTarget = () => {
+                const state = useEditorStore.getState();
+                if (state.searchTarget) {
+                  state.setSearchTarget(null);
+                }
+              };
+              ed.onMouseDown(clearTarget);
+              ed.onKeyDown(clearTarget);
+            }}
             options={{
               minimap: { enabled: false },
               fontSize: 13,

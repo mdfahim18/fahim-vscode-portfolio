@@ -18,6 +18,12 @@ interface FileResult {
 export function SearchSidebar({ onClose }: { onClose: () => void }) {
   const [query, setQuery] = useState("");
   const openFile = useEditorStore((s) => s.openFile);
+  const setSearchTarget = useEditorStore((s) => s.setSearchTarget);
+
+  const handleOpen = (fileName: string, line: number) => {
+    openFile(fileName);
+    setSearchTarget({ file: fileName, line, query: query.trim() });
+  };
 
   const results = useMemo<FileResult[]>(() => {
     const q = query.trim().toLowerCase();
@@ -95,7 +101,9 @@ export function SearchSidebar({ onClose }: { onClose: () => void }) {
           results.map((file) => (
             <div key={file.fileName} className="mb-2">
               <button
-                onClick={() => openFile(file.fileName)}
+                onClick={() =>
+                  handleOpen(file.fileName, file.matches[0]?.lineNumber ?? 1)
+                }
                 className="flex w-full items-center gap-2 rounded px-2 py-1 text-left text-[13px] text-gray-200 hover:bg-vs-sidebar-item-hover-bg"
               >
                 <FileText size={14} className="text-blue-400 shrink-0" />
@@ -109,7 +117,7 @@ export function SearchSidebar({ onClose }: { onClose: () => void }) {
                 {file.matches.map((match) => (
                   <button
                     key={match.lineNumber}
-                    onClick={() => openFile(file.fileName)}
+                    onClick={() => handleOpen(file.fileName, match.lineNumber)}
                     className="flex w-full items-center gap-2 px-2 py-0.5 text-left text-xs text-gray-400 hover:bg-[#2a2d2e] cursor-pointer"
                   >
                     <span className="w-6 shrink-0 pr-2 text-right text-gray-500">
