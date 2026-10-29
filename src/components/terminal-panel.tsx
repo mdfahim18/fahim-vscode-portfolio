@@ -54,28 +54,29 @@ export function TerminalPanel() {
         term.write("\r\n");
         term.write(PROMPT);
 
-        term.onKey((e) => {
-          const { domEvent } = e;
-          const key = domEvent.key;
-
-          if (key === "\r") {
-            domEvent.preventDefault();
+        term.onData((data) => {
+          // Enter
+          if (data === "\r") {
+            const line = currentLine;
             term!.write("\r\n");
-            saveToHistory(currentLine);
-            const result = runCommand(currentLine);
+            saveToHistory(line);
+
+            const result = runCommand(line);
+
             if (result.clear) {
-              term!.reset();
+              term!.clear();
             } else {
               result.output.forEach((l) => term!.writeln(l));
               term!.write("\r\n");
             }
+
             currentLine = "";
             term!.write(PROMPT);
             return;
           }
 
-          if (key === "Backspace") {
-            domEvent.preventDefault();
+          // Backspace
+          if (data === "\x7f") {
             if (currentLine.length > 0) {
               currentLine = currentLine.slice(0, -1);
               term!.write("\b \b");
@@ -83,17 +84,12 @@ export function TerminalPanel() {
             return;
           }
 
-          if (key.length === 1 && key >= " " && key <= "~") {
-            currentLine += key;
-            term!.write(key);
-          }
+          // Ignore control / escape sequences (arrow keys, etc.)
+          if (data < " " || data > "~") return;
 
-          if (key === "\x03") {
-            domEvent.preventDefault();
-            term!.write("^C\r\n");
-            currentLine = "";
-            term!.write(PROMPT);
-          }
+          // Printable characters
+          currentLine += data;
+          term!.write(data);
         });
       } catch (err) {
         console.error("xterm init error:", err);
@@ -116,7 +112,7 @@ export function TerminalPanel() {
 
   const clearTerminal = () => {
     if (termRef.current) {
-      termRef.current.reset();
+      termRef.current.clear();
     }
   };
 
