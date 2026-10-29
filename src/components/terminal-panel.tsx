@@ -17,6 +17,7 @@ export function TerminalPanel() {
     let term: Terminal | null = null;
     let clickHandler: (() => void) | null = null;
     let containerEl: HTMLDivElement | null = null;
+    let resizeObserver: ResizeObserver | null = null;
 
     const initTerminal = async () => {
       if (typeof window === "undefined") return;
@@ -24,9 +25,8 @@ export function TerminalPanel() {
       try {
         await import("xterm/css/xterm.css");
         const { Terminal: XTerm } = await import("xterm");
+        const { FitAddon } = await import("xterm-addon-fit");
 
-        // Re-check after async: the component may have unmounted or remounted
-        // (React Strict Mode / responsive panel remount) while we awaited.
         const el = containerRef.current;
         if (disposed || !el || termRef.current) return;
         containerEl = el;
@@ -40,19 +40,41 @@ export function TerminalPanel() {
           fontSize: 13,
           fontFamily: "'Cascadia Code', monospace",
           cursorBlink: true,
+          scrollback: 1000,
         });
+
+        const fitAddon = new FitAddon();
+        term.loadAddon(fitAddon);
+
         termRef.current = term;
         term.open(el);
+        try {
+          fitAddon.fit();
+        } catch {
+          /* container may have zero size on first paint */
+        }
         term.focus();
 
         clickHandler = () => term?.focus();
         el.addEventListener("click", clickHandler);
+
+        // Keep the terminal sized to its container (panel resizing, layout changes)
+        resizeObserver = new ResizeObserver(() => {
+          if (disposed) return;
+          try {
+            fitAddon.fit();
+          } catch {
+            /* ignore transient zero-size states */
+          }
+        });
+        resizeObserver.observe(el);
 
         term.writeln(
           "\x1b[2mWelcome to Fahim's VS Code Terminal — type \x1b[32mhelp\x1b[0m to begin"
         );
         term.write("\r\n");
         term.write(PROMPT);
+        term.scrollToBottom();
 
         term.onData((data) => {
           // Enter
@@ -71,6 +93,7 @@ export function TerminalPanel() {
             }
 
             currentLine = "";
+            term!.scrollToBottom();
             term!.write(PROMPT);
             return;
           }
@@ -100,6 +123,7 @@ export function TerminalPanel() {
 
     return () => {
       disposed = true;
+      resizeObserver?.disconnect();
       if (clickHandler && containerEl) {
         containerEl.removeEventListener("click", clickHandler);
       }
@@ -131,7 +155,10 @@ export function TerminalPanel() {
           <Trash2 size={12} />
         </button>
       </div>
-      <div ref={containerRef} className="flex-1 overflow-hidden cursor-text" />
+      <div
+        ref={containerRef}
+        className="w-full flex-1 min-h-0 overflow-hidden p-2 cursor-text"
+      />
     </div>
   );
 }
