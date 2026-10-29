@@ -11,7 +11,7 @@ export const files: Record<string, VirtualFile> = {
     content: `import { Skills, Stack } from "./about";
 
 export const developer = {
-  name: "Fahim Chowdhury",
+  name: "Mahmudul Amin Fahim",
   role: "Full Stack Developer",
   tagline: "I build production-grade web apps with Next.js & TypeScript.",
   location: "Bangladesh",

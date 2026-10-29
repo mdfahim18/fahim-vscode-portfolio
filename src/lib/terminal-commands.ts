@@ -14,7 +14,7 @@ const HELP: CommandResult = {
   output: [
     `${cyan}Available commands:${reset}`,
     `  ${green}help${reset}            Show this help message`,
-    `  ${green}about${reset}           About Fahim Chowdhury`,
+    `  ${green}about${reset}           About Mahmudul Amin Fahim`,
     `  ${green}skills${reset}          Technical skill set`,
     `  ${green}projects${reset}        List portfolio projects`,
     `  ${green}contact${reset}         How to get in touch`,
@@ -28,7 +28,7 @@ const HELP: CommandResult = {
 
 const ABOUT: CommandResult = {
   output: [
-    `${cyan}Fahim Chowdhury — Full Stack Developer${reset}`,
+    `${cyan}Mahmudul Amin Fahim — Full Stack Developer${reset}`,
     "",
     "I'm a full stack developer from Bangladesh who loves",
     "clean architecture, fast products and great developer UX.",
