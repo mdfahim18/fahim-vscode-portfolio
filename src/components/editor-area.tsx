@@ -149,6 +149,7 @@ export function EditorArea() {
               ed.onKeyDown(clearTarget);
             }}
             options={{
+              readOnly: true,
               minimap: { enabled: false },
               fontSize: 13,
               fontFamily: "'Cascadia Code', 'Fira Code', monospace",
