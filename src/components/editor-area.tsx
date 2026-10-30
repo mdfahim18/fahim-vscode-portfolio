@@ -38,6 +38,9 @@ export function EditorArea() {
   const searchTarget = useEditorStore((s) => s.searchTarget);
   const currentTheme = useThemeStore((s) => s.currentTheme);
   const fontSize = useThemeStore((s) => s.fontSize);
+  const fontWeight = useThemeStore((s) => s.fontWeight);
+  const fontFamily = useThemeStore((s) => s.fontFamily);
+  const letterSpacing = useThemeStore((s) => s.letterSpacing);
 
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const decorationsRef = useRef<editor.IEditorDecorationsCollection | null>(
@@ -161,7 +164,9 @@ export function EditorArea() {
               readOnly: true,
               minimap: { enabled: false },
               fontSize: fontSize,
-              fontFamily: "'Cascadia Code', 'Fira Code', monospace",
+              fontWeight: fontWeight,
+              fontFamily: fontFamily,
+              letterSpacing: letterSpacing,
               wordWrap: "on",
               scrollBeyondLastLine: false,
               padding: { top: 8 },

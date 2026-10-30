@@ -74,6 +74,12 @@ export function SettingsSidebar({ onClose }: { onClose: () => void }) {
   const setTheme = useThemeStore((s) => s.setTheme);
   const fontSize = useThemeStore((s) => s.fontSize);
   const setFontSize = useThemeStore((s) => s.setFontSize);
+  const fontWeight = useThemeStore((s) => s.fontWeight);
+  const setFontWeight = useThemeStore((s) => s.setFontWeight);
+  const fontFamily = useThemeStore((s) => s.fontFamily);
+  const setFontFamily = useThemeStore((s) => s.setFontFamily);
+  const letterSpacing = useThemeStore((s) => s.letterSpacing);
+  const setLetterSpacing = useThemeStore((s) => s.setLetterSpacing);
   const closeSidebar = useUIStore((s) => s.closeSidebar);
 
   const toggleSection = (id: string) => {
@@ -151,72 +157,113 @@ export function SettingsSidebar({ onClose }: { onClose: () => void }) {
 
         <AccordionSection
           id="font-size"
-          title="Font Size"
-          subtitle="Adjust the editor font size."
+          title="Editor Font"
+          subtitle="Customize the editor typography."
           icon={<Type size={13} className="text-vs-accent" />}
           isOpen={openSection === "font-size"}
           onToggle={toggleSection}
         >
-          <div className="px-3 pb-1 pt-2">
-            <div className="mb-2 flex items-center justify-between">
-              <span className="text-xs text-gray-400">Editor Font Size</span>
-              <span className="rounded bg-[#161616] px-2 py-0.5 text-xs font-medium text-vs-accent">
-                {fontSize}px
-              </span>
+          <div className="space-y-3 px-3 pb-2 pt-2">
+            {/* Font Size */}
+            <div>
+              <div className="mb-2 flex items-center justify-between">
+                <span className="text-xs text-gray-400">Font Size</span>
+                <span className="rounded bg-[#161616] px-2 py-0.5 text-xs font-medium text-vs-accent">
+                  {fontSize}px
+                </span>
+              </div>
+              <input
+                type="range"
+                min={12}
+                max={20}
+                step={1}
+                value={fontSize}
+                onChange={(e) => setFontSize(Number(e.target.value))}
+                className="w-full cursor-pointer accent-vs-accent"
+                aria-label="Editor font size"
+              />
+              <div className="mt-1 flex justify-between text-[10px] text-gray-600">
+                <span>12</span>
+                <span>16</span>
+                <span>20</span>
+              </div>
             </div>
-            <input
-              type="range"
-              min={12}
-              max={20}
-              step={1}
-              value={fontSize}
-              onChange={(e) => setFontSize(Number(e.target.value))}
-              className="w-full cursor-pointer accent-vs-accent"
-              aria-label="Editor font size"
-            />
-            <div className="mt-1 flex justify-between text-[10px] text-gray-600">
-              <span>12</span>
-              <span>16</span>
-              <span>20</span>
+
+            {/* Font Weight */}
+            <div>
+              <label className="mb-1 block text-xs text-gray-400">
+                Font Weight
+              </label>
+              <select
+                value={fontWeight}
+                onChange={(e) => setFontWeight(e.target.value)}
+                className="w-full rounded bg-[#161616] border border-vs-border px-2 py-1 text-xs text-gray-200 outline-none focus:ring-1 focus:ring-vs-accent"
+              >
+                {["300", "400", "500", "600", "700"].map((w) => (
+                  <option key={w} value={w}>
+                    {w}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Font Family */}
+            <div>
+              <label className="mb-1 block text-xs text-gray-400">
+                Font Family
+              </label>
+              <select
+                value={fontFamily}
+                onChange={(e) => setFontFamily(e.target.value)}
+                className="w-full rounded bg-[#161616] border border-vs-border px-2 py-1 text-xs text-gray-200 outline-none focus:ring-1 focus:ring-vs-accent"
+              >
+                {[
+                  "'Cascadia Code', 'Fira Code', monospace",
+                  "'Fira Code', monospace",
+                  "'Consolas', monospace",
+                  "monospace",
+                ].map((f) => (
+                  <option key={f} value={f}>
+                    {f}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Letter Spacing */}
+            <div>
+              <div className="mb-2 flex items-center justify-between">
+                <span className="text-xs text-gray-400">
+                  Letter Spacing (px)
+                </span>
+                <span className="rounded bg-[#161616] px-2 py-0.5 text-xs font-medium text-vs-accent">
+                  {letterSpacing}
+                </span>
+              </div>
+              <input
+                type="range"
+                min={-2}
+                max={5}
+                step={1}
+                value={letterSpacing}
+                onChange={(e) => setLetterSpacing(Number(e.target.value))}
+                className="w-full cursor-pointer accent-vs-accent"
+                aria-label="Editor letter spacing"
+              />
+              <div className="mt-1 flex justify-between text-[10px] text-gray-600">
+                <span>-2</span>
+                <span>0</span>
+                <span>5</span>
+              </div>
             </div>
           </div>
         </AccordionSection>
 
-        {/* TODO: Font Weight section (accordion) goes here */}
         {/* TODO: Terminal, Editor, Tab Size, etc. sections go here */}
-        <DisabledSection title="Font Weight" subtitle="Coming Soon" />
 
         <div className="px-3 py-2 text-[10px] text-gray-600">
           More settings coming soon.
         </div>
-      </div>
-    </div>
-  );
-}
-
-function DisabledSection({
-  title,
-  subtitle,
-}: {
-  title: string;
-  subtitle: string;
-}) {
-  return (
-    <div className="border-b border-vs-border">
-      <div
-        className="flex w-full items-center gap-2 px-3 py-2 cursor-not-allowed opacity-50"
-        aria-disabled="true"
-        title="Coming Soon"
-      >
-        <span className="min-w-0 flex-1">
-          <span className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400">
-            {title}
-          </span>
-          <span className="block text-[11px] text-gray-600 truncate">
-            {subtitle}
-          </span>
-        </span>
-        <ChevronDown size={14} className="shrink-0 text-gray-600" />
       </div>
     </div>
   );
