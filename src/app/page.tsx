@@ -6,6 +6,7 @@ import { ActivityBar } from "@/components/activity-bar";
 import { Sidebar } from "@/components/sidebar";
 import { SearchSidebar } from "@/components/search-sidebar";
 import { SourceControlSidebar } from "@/components/source-control-sidebar";
+import { ExtensionsSidebar } from "@/components/extensions-sidebar";
 import { PlaceholderSidebar } from "@/components/placeholder-sidebar";
 import { EditorArea } from "@/components/editor-area";
 import { TerminalPanel } from "@/components/terminal-panel";
@@ -146,6 +147,8 @@ function renderSidebarContent(activeSidebarView: SidebarView) {
       return <SearchSidebar onClose={closeSidebar} />;
     case "git":
       return <SourceControlSidebar onClose={closeSidebar} />;
+    case "extensions":
+      return <ExtensionsSidebar onClose={closeSidebar} />;
     default:
       return (
         <PlaceholderSidebar
