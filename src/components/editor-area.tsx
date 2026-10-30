@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import type { editor } from "monaco-editor";
-import { FileText, X, Circle } from "lucide-react";
+import { FileText, X } from "lucide-react";
 import { useEditorStore } from "@/store/editor-store";
 import { files } from "@/data/files";
 
@@ -29,7 +29,6 @@ function fileColor(name: string) {
 export function EditorArea() {
   const openTabs = useEditorStore((s) => s.openTabs);
   const activeFile = useEditorStore((s) => s.activeFile);
-  const dirtyTabs = useEditorStore((s) => s.dirtyTabs);
   const contents = useEditorStore((s) => s.contents);
   const setActiveFile = useEditorStore((s) => s.setActiveFile);
   const closeTab = useEditorStore((s) => s.closeTab);
@@ -108,19 +107,15 @@ export function EditorArea() {
           >
             <FileText size={14} className={fileColor(name)} />
             <span>{name}</span>
-            {dirtyTabs.has(name) ? (
-              <Circle size={10} className="fill-current" />
-            ) : (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  closeTab(name);
-                }}
-                className="hidden group-hover:block text-gray-400 hover:text-white"
-              >
-                <X size={12} />
-              </button>
-            )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                closeTab(name);
+              }}
+              className="hidden group-hover:block text-gray-400 hover:text-white"
+            >
+              <X size={12} />
+            </button>
           </div>
         ))}
       </div>
