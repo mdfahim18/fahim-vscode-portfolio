@@ -1,26 +1,119 @@
 @import "tailwindcss";
 
-:root {
+:root,
+.theme-cyberpunk {
   --vs-color: #030303;
   --vs-activity-bar-bg: #0a0a0a;
   --vs-activity-bar-hover-bg: #1a1a1a;
   --vs-activity-bar-active: #eb4100;
-  --vs-sidebar-bg: #0a0a0a;
+  --vs-accent-warm: #f8c555;
+  --vs-accent-crimson: #dc2626;
+  --vs-sidebar-bg: #111111;
   --vs-sidebar-item-hover-bg: #1a1a1a;
   --vs-sidebar-item-active: #eb4100;
-  --vs-editor-bg: #030303;
-  --vs-editor-foreground: #d4d4d4;
+  --vs-editor-bg: #0a0a0a;
+  --vs-editor-foreground: #e0e0e0;
   --vs-editor-cursor: #eb4100;
-  --vs-panel-bg: #030303;
+  --vs-panel-bg: #0a0a0a;
   --vs-tab-bg: #0f0f0f;
   --vs-tab-hover-bg: #1a1a1a;
-  --vs-tab-active-bg: #030303;
+  --vs-tab-active-bg: #0a0a0a;
   --vs-tab-active-border: #eb4100;
   --vs-border: #262626;
   --vs-terminal-bg: #030303;
   --vs-accent: #eb4100;
-  --vs-accent-warm: #f8c555;
-  --vs-accent-crimson: #dc2626;
+}
+
+.theme-tokyo-night {
+  --vs-color: #1a1b26;
+  --vs-activity-bar-bg: #16161e;
+  --vs-activity-bar-hover-bg: #1f2335;
+  --vs-activity-bar-active: #7dcfff;
+  --vs-sidebar-bg: #16161e;
+  --vs-sidebar-item-hover-bg: #1f2335;
+  --vs-sidebar-item-active: #7dcfff;
+  --vs-editor-bg: #1a1b26;
+  --vs-editor-foreground: #c0caf5;
+  --vs-editor-cursor: #7dcfff;
+  --vs-panel-bg: #1a1b26;
+  --vs-tab-bg: #16161e;
+  --vs-tab-hover-bg: #1f2335;
+  --vs-tab-active-bg: #1a1b26;
+  --vs-tab-active-border: #7dcfff;
+  --vs-border: #292e42;
+  --vs-terminal-bg: #1a1b26;
+  --vs-accent: #7dcfff;
+  --vs-accent-warm: #e0af68;
+  --vs-accent-crimson: #f7768e;
+}
+
+.theme-dracula {
+  --vs-color: #282a36;
+  --vs-activity-bar-bg: #21222c;
+  --vs-activity-bar-hover-bg: #343746;
+  --vs-activity-bar-active: #ff79c6;
+  --vs-sidebar-bg: #21222c;
+  --vs-sidebar-item-hover-bg: #343746;
+  --vs-sidebar-item-active: #ff79c6;
+  --vs-editor-bg: #282a36;
+  --vs-editor-foreground: #f8f8f2;
+  --vs-editor-cursor: #ff79c6;
+  --vs-panel-bg: #282a36;
+  --vs-tab-bg: #21222c;
+  --vs-tab-hover-bg: #343746;
+  --vs-tab-active-bg: #282a36;
+  --vs-tab-active-border: #ff79c6;
+  --vs-border: #44475a;
+  --vs-terminal-bg: #282a36;
+  --vs-accent: #ff79c6;
+  --vs-accent-warm: #f1fa8c;
+  --vs-accent-crimson: #ff5555;
+}
+
+.theme-matrix {
+  --vs-color: #0d0208;
+  --vs-activity-bar-bg: #000000;
+  --vs-activity-bar-hover-bg: #0a1a0a;
+  --vs-activity-bar-active: #00ff41;
+  --vs-sidebar-bg: #000000;
+  --vs-sidebar-item-hover-bg: #0a1a0a;
+  --vs-sidebar-item-active: #00ff41;
+  --vs-editor-bg: #0d0208;
+  --vs-editor-foreground: #00ff41;
+  --vs-editor-cursor: #00ff41;
+  --vs-panel-bg: #0d0208;
+  --vs-tab-bg: #000000;
+  --vs-tab-hover-bg: #0a1a0a;
+  --vs-tab-active-bg: #0d0208;
+  --vs-tab-active-border: #00ff41;
+  --vs-border: #003b00;
+  --vs-terminal-bg: #0d0208;
+  --vs-accent: #00ff41;
+  --vs-accent-warm: #00ff41;
+  --vs-accent-crimson: #00ff41;
+}
+
+.theme-synthwave {
+  --vs-color: #241b2f;
+  --vs-activity-bar-bg: #1a1423;
+  --vs-activity-bar-hover-bg: #2a2038;
+  --vs-activity-bar-active: #ff7edb;
+  --vs-sidebar-bg: #1a1423;
+  --vs-sidebar-item-hover-bg: #2a2038;
+  --vs-sidebar-item-active: #ff7edb;
+  --vs-editor-bg: #241b2f;
+  --vs-editor-foreground: #f8f8f2;
+  --vs-editor-cursor: #ff7edb;
+  --vs-panel-bg: #241b2f;
+  --vs-tab-bg: #1a1423;
+  --vs-tab-hover-bg: #2a2038;
+  --vs-tab-active-bg: #241b2f;
+  --vs-tab-active-border: #ff7edb;
+  --vs-border: #3d2f52;
+  --vs-terminal-bg: #241b2f;
+  --vs-accent: #ff7edb;
+  --vs-accent-warm: #fede5d;
+  --vs-accent-crimson: #fe4450;
 }
 
 @theme inline {
@@ -51,41 +144,32 @@
 body {
   background: var(--vs-color);
   color: var(--vs-editor-foreground);
-  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', monospace;
+  font-family: "Cascadia Code", "Fira Code", "Consolas", "Monaco", monospace;
   margin: 0;
   height: 100vh;
   overflow: hidden;
 }
 
-/* Custom scrollbar: dark gray thumb, neon orange on hover */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #262626 transparent;
-}
-
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
-
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background-color: #262626;
+  background: #3b3b3b;
   border-radius: 5px;
-  border: 2px solid transparent;
-  background-clip: content-box;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #eb4100;
-  background-clip: content-box;
+  background: var(--vs-accent);
 }
 
 @keyframes typing-bounce {
-  0%, 60%, 100% {
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
     opacity: 0.4;
   }

@@ -7,11 +7,13 @@ import { Sidebar } from "@/components/sidebar";
 import { SearchSidebar } from "@/components/search-sidebar";
 import { SourceControlSidebar } from "@/components/source-control-sidebar";
 import { ExtensionsSidebar } from "@/components/extensions-sidebar";
+import { SettingsSidebar } from "@/components/settings-sidebar";
 import { PlaceholderSidebar } from "@/components/placeholder-sidebar";
 import { EditorArea } from "@/components/editor-area";
 import { TerminalPanel } from "@/components/terminal-panel";
 import { AIAssistantPanel } from "@/components/ai-panel";
 import { useUIStore, type SidebarView } from "@/store/ui-store";
+import { useThemeStore } from "@/store/theme-store";
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -37,9 +39,14 @@ export default function VSCodePage() {
   const isSidebarOpen = useUIStore((s) => s.isSidebarOpen);
   const activeSidebarView = useUIStore((s) => s.activeSidebarView);
   const closeSidebar = useUIStore((s) => s.closeSidebar);
+  const initTheme = useThemeStore((s) => s.initTheme);
 
   const isTablet = useMediaQuery("(min-width: 768px)");
   const isDesktop = useMediaQuery("(min-width: 1024px)");
+
+  useEffect(() => {
+    initTheme();
+  }, [initTheme]);
 
   const showSidebar = isSidebarOpen;
   const showAI = isDesktop;
@@ -147,8 +154,10 @@ function renderSidebarContent(activeSidebarView: SidebarView) {
       return <SearchSidebar onClose={closeSidebar} />;
     case "git":
       return <SourceControlSidebar onClose={closeSidebar} />;
-    case "extensions":
+      case "extensions":
       return <ExtensionsSidebar onClose={closeSidebar} />;
+    case "settings":
+      return <SettingsSidebar onClose={closeSidebar} />;
     default:
       return (
         <PlaceholderSidebar
