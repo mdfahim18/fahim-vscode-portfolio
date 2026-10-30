@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { FileText, Search, X } from "lucide-react";
 import { files } from "@/data/files";
 import { useEditorStore } from "@/store/editor-store";
+import { useUIStore } from "@/store/ui-store";
 
 interface Match {
   lineNumber: number;
@@ -19,10 +20,14 @@ export function SearchSidebar({ onClose }: { onClose: () => void }) {
   const [query, setQuery] = useState("");
   const openFile = useEditorStore((s) => s.openFile);
   const setSearchTarget = useEditorStore((s) => s.setSearchTarget);
+  const closeSidebar = useUIStore((s) => s.closeSidebar);
 
   const handleOpen = (fileName: string, line: number) => {
     openFile(fileName);
     setSearchTarget({ file: fileName, line, query: query.trim() });
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      closeSidebar();
+    }
   };
 
   const results = useMemo<FileResult[]>(() => {

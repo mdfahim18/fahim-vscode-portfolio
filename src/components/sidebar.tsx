@@ -2,6 +2,7 @@
 
 import { FolderOpen, FileText, X } from "lucide-react";
 import { useEditorStore } from "@/store/editor-store";
+import { useUIStore } from "@/store/ui-store";
 import { fileNames } from "@/data/files";
 
 const fileIcons: Record<string, string> = {
@@ -19,6 +20,7 @@ function getFileColor(name: string) {
 export function Sidebar({ onClose }: { onClose: () => void }) {
   const activeFile = useEditorStore((s) => s.activeFile);
   const openFile = useEditorStore((s) => s.openFile);
+  const closeSidebar = useUIStore((s) => s.closeSidebar);
 
   return (
     <div className="h-full bg-vs-sidebar-bg border-r border-vs-border overflow-y-auto">
@@ -46,7 +48,12 @@ export function Sidebar({ onClose }: { onClose: () => void }) {
           {fileNames.map((name) => (
             <button
               key={name}
-              onClick={() => openFile(name)}
+              onClick={() => {
+                openFile(name);
+                if (window.matchMedia("(max-width: 767px)").matches) {
+                  closeSidebar();
+                }
+              }}
               className={`w-full flex items-center gap-2 px-2 py-1 text-[13px] rounded cursor-pointer text-left transition-colors ${
                 activeFile === name
                   ? "bg-vs-sidebar-item-active text-white"
