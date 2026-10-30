@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import type { editor } from "monaco-editor";
+import type { Monaco } from "@monaco-editor/react";
 import { FileText, X } from "lucide-react";
 import { useEditorStore } from "@/store/editor-store";
 import { useThemeStore } from "@/store/theme-store";
@@ -43,9 +44,26 @@ export function EditorArea() {
   const letterSpacing = useThemeStore((s) => s.letterSpacing);
 
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+  const monacoRef = useRef<Monaco | null>(null);
   const decorationsRef = useRef<editor.IEditorDecorationsCollection | null>(
     null
   );
+
+  // Monaco caches font metrics. Force a re-measure whenever typography changes
+  // so the editor actually re-renders with the new font settings.
+  useEffect(() => {
+    const ed = editorRef.current;
+    const monaco = monacoRef.current;
+    if (!ed || !monaco) return;
+
+    ed.updateOptions({
+      fontSize,
+      fontWeight,
+      fontFamily,
+      letterSpacing,
+    });
+    monaco.editor.remeasureFonts();
+  }, [fontSize, fontWeight, fontFamily, letterSpacing]);
 
   // Handle search-result navigation: reveal the line and highlight matches.
   useEffect(() => {
@@ -135,6 +153,7 @@ export function EditorArea() {
             theme={`theme-${currentTheme}`}
             value={contents[activeFile!] ?? active.content}
             beforeMount={(monaco) => {
+              monacoRef.current = monaco;
               Object.entries(monacoThemes).forEach(([key, theme]) => {
                 monaco.editor.defineTheme(`theme-${key}`, {
                   base: theme.base,

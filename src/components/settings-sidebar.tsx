@@ -218,13 +218,22 @@ export function SettingsSidebar({ onClose }: { onClose: () => void }) {
                 className="w-full rounded bg-[#161616] border border-vs-border px-2 py-1 text-xs text-gray-200 outline-none focus:ring-1 focus:ring-vs-accent"
               >
                 {[
-                  "'Cascadia Code', 'Fira Code', monospace",
-                  "'Fira Code', monospace",
-                  "'Consolas', monospace",
-                  "monospace",
+                  {
+                    label: "Fira Code",
+                    value: "var(--font-fira-code), monospace",
+                  },
+                  {
+                    label: "JetBrains Mono",
+                    value: "var(--font-jetbrains-mono), monospace",
+                  },
+                  {
+                    label: "Source Code Pro",
+                    value: "var(--font-source-code-pro), monospace",
+                  },
+                  { label: "Consolas", value: "'Consolas', monospace" },
                 ].map((f) => (
-                  <option key={f} value={f}>
-                    {f}
+                  <option key={f.value} value={f.value}>
+                    {f.label}
                   </option>
                 ))}
               </select>

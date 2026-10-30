@@ -9,7 +9,7 @@ const LETTER_SPACING_KEY = "fahim-letter-spacing";
 const DEFAULT_THEME = "cyberpunk";
 const DEFAULT_FONT_SIZE = 14;
 const DEFAULT_FONT_WEIGHT = "400";
-const DEFAULT_FONT_FAMILY = "'Cascadia Code', 'Fira Code', monospace";
+const DEFAULT_FONT_FAMILY = "var(--font-fira-code), monospace";
 const DEFAULT_LETTER_SPACING = 0;
 
 function getValidThemeId(id: string | null): string {
