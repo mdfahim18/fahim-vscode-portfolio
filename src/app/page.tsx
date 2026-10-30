@@ -64,7 +64,7 @@ export default function VSCodePage() {
             className="fixed inset-0 left-12 z-40 bg-black/50"
             onClick={closeSidebar}
           />
-          <div className="absolute inset-y-0 left-12 z-50 h-full w-64 overflow-hidden">
+          <div className="absolute inset-y-0 left-12 z-50 h-full w-64 overflow-hidden rounded-r-lg border-r border-white/10 bg-[#252526]/85 shadow-2xl backdrop-blur-md">
             {sidebarContent}
           </div>
         </>
