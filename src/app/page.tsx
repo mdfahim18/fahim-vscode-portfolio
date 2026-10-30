@@ -40,45 +40,42 @@ export default function VSCodePage() {
   const isTablet = useMediaQuery("(min-width: 768px)");
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
-  const showSidebar = isSidebarOpen && isTablet;
+  const showSidebar = isSidebarOpen;
   const showAI = isDesktop;
   const layoutKey = `${isTablet}-${isDesktop}`;
+
+  const sidebarContent = renderSidebarContent(activeSidebarView);
 
   const hSeparator =
     "w-1 bg-[#3c3c3c] hover:bg-blue-500 transition-colors cursor-col-resize";
   const vSeparator =
     "h-1 bg-[#3c3c3c] hover:bg-blue-500 transition-colors cursor-row-resize";
 
-  const renderSidebarContent = () => {
-    switch (activeSidebarView) {
-      case "explorer":
-        return <Sidebar onClose={closeSidebar} />;
-      case "search":
-        return <SearchSidebar onClose={closeSidebar} />;
-      case "git":
-        return <SourceControlSidebar onClose={closeSidebar} />;
-      default:
-        return (
-          <PlaceholderSidebar
-            title={VIEW_TITLES[activeSidebarView]}
-            onClose={closeSidebar}
-          />
-        );
-    }
-  };
-
   return (
     <div className="h-screen w-full overflow-hidden overflow-x-hidden flex">
-      <div className="w-12 shrink-0 bg-[#1e1e1e] border-r border-[#3c3c3c]">
+      <div className="relative z-50 w-12 shrink-0 bg-[#1e1e1e] border-r border-[#3c3c3c]">
         <ActivityBar />
       </div>
+
+      {/* Mobile backdrop + overlay sidebar */}
+      {!isTablet && showSidebar && (
+        <>
+          <div
+            className="fixed inset-0 left-12 z-40 bg-black/50"
+            onClick={closeSidebar}
+          />
+          <div className="absolute inset-y-0 left-12 z-50 h-full w-64 overflow-hidden">
+            {sidebarContent}
+          </div>
+        </>
+      )}
 
       <Group
         key={layoutKey}
         orientation="horizontal"
         className="flex-1 min-w-0 h-full"
       >
-        {showSidebar && (
+        {isTablet && showSidebar && (
           <>
             <Panel
               id="sidebar"
@@ -87,7 +84,7 @@ export default function VSCodePage() {
               maxSize="30"
               className="overflow-hidden bg-[#251e20] border-r border-[#3c3c3c]"
             >
-              {renderSidebarContent()}
+              {sidebarContent}
             </Panel>
             <Separator className={hSeparator} />
           </>
@@ -137,4 +134,24 @@ export default function VSCodePage() {
       </Group>
     </div>
   );
+}
+
+function renderSidebarContent(activeSidebarView: SidebarView) {
+  const closeSidebar = useUIStore.getState().closeSidebar;
+
+  switch (activeSidebarView) {
+    case "explorer":
+      return <Sidebar onClose={closeSidebar} />;
+    case "search":
+      return <SearchSidebar onClose={closeSidebar} />;
+    case "git":
+      return <SourceControlSidebar onClose={closeSidebar} />;
+    default:
+      return (
+        <PlaceholderSidebar
+          title={VIEW_TITLES[activeSidebarView]}
+          onClose={closeSidebar}
+        />
+      );
+  }
 }
