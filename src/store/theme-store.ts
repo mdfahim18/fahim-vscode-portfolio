@@ -2,7 +2,9 @@ import { create } from "zustand";
 import { themesData } from "@/data/themes";
 
 const STORAGE_KEY = "fahim-theme";
+const FONT_SIZE_KEY = "fahim-font-size";
 const DEFAULT_THEME = "cyberpunk";
+const DEFAULT_FONT_SIZE = 14;
 
 function getValidThemeId(id: string | null): string {
   if (id && themesData.some((theme) => theme.id === id)) {
@@ -20,12 +22,15 @@ function applyThemeClass(themeId: string) {
 
 interface ThemeState {
   currentTheme: string;
+  fontSize: number;
   setTheme: (themeId: string) => void;
+  setFontSize: (size: number) => void;
   initTheme: () => void;
 }
 
 export const useThemeStore = create<ThemeState>((set) => ({
   currentTheme: DEFAULT_THEME,
+  fontSize: DEFAULT_FONT_SIZE,
 
   setTheme: (themeId) => {
     const validId = getValidThemeId(themeId);
@@ -36,14 +41,29 @@ export const useThemeStore = create<ThemeState>((set) => ({
     set({ currentTheme: validId });
   },
 
+  setFontSize: (size) => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(FONT_SIZE_KEY, String(size));
+    }
+    set({ fontSize: size });
+  },
+
   initTheme: () => {
     let stored: string | null = null;
+    let storedFontSize: string | null = null;
     if (typeof window !== "undefined") {
       stored = localStorage.getItem(STORAGE_KEY);
+      storedFontSize = localStorage.getItem(FONT_SIZE_KEY);
     }
     const validId = getValidThemeId(stored);
     applyThemeClass(validId);
-    set({ currentTheme: validId });
+
+    const parsedSize = storedFontSize ? Number(storedFontSize) : NaN;
+    const fontSize = Number.isFinite(parsedSize)
+      ? parsedSize
+      : DEFAULT_FONT_SIZE;
+
+    set({ currentTheme: validId, fontSize });
   },
 }));
 

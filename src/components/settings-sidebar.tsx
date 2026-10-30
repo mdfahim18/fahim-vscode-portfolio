@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronDown, Palette, X } from "lucide-react";
+import { Check, ChevronDown, Palette, Type, X } from "lucide-react";
 import { themesData } from "@/data/themes";
 import { useThemeStore } from "@/store/theme-store";
 import { useUIStore } from "@/store/ui-store";
@@ -72,6 +72,8 @@ export function SettingsSidebar({ onClose }: { onClose: () => void }) {
 
   const currentTheme = useThemeStore((s) => s.currentTheme);
   const setTheme = useThemeStore((s) => s.setTheme);
+  const fontSize = useThemeStore((s) => s.fontSize);
+  const setFontSize = useThemeStore((s) => s.setFontSize);
   const closeSidebar = useUIStore((s) => s.closeSidebar);
 
   const toggleSection = (id: string) => {
@@ -147,10 +149,41 @@ export function SettingsSidebar({ onClose }: { onClose: () => void }) {
           </div>
         </AccordionSection>
 
-        {/* TODO: Font Size section (accordion) goes here */}
+        <AccordionSection
+          id="font-size"
+          title="Font Size"
+          subtitle="Adjust the editor font size."
+          icon={<Type size={13} className="text-vs-accent" />}
+          isOpen={openSection === "font-size"}
+          onToggle={toggleSection}
+        >
+          <div className="px-3 pb-1 pt-2">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-xs text-gray-400">Editor Font Size</span>
+              <span className="rounded bg-[#161616] px-2 py-0.5 text-xs font-medium text-vs-accent">
+                {fontSize}px
+              </span>
+            </div>
+            <input
+              type="range"
+              min={12}
+              max={20}
+              step={1}
+              value={fontSize}
+              onChange={(e) => setFontSize(Number(e.target.value))}
+              className="w-full cursor-pointer accent-vs-accent"
+              aria-label="Editor font size"
+            />
+            <div className="mt-1 flex justify-between text-[10px] text-gray-600">
+              <span>12</span>
+              <span>16</span>
+              <span>20</span>
+            </div>
+          </div>
+        </AccordionSection>
+
         {/* TODO: Font Weight section (accordion) goes here */}
         {/* TODO: Terminal, Editor, Tab Size, etc. sections go here */}
-        <DisabledSection title="Font Size" subtitle="Coming Soon" />
         <DisabledSection title="Font Weight" subtitle="Coming Soon" />
 
         <div className="px-3 py-2 text-[10px] text-gray-600">

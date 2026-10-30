@@ -37,6 +37,7 @@ export function EditorArea() {
   const updateContent = useEditorStore((s) => s.updateContent);
   const searchTarget = useEditorStore((s) => s.searchTarget);
   const currentTheme = useThemeStore((s) => s.currentTheme);
+  const fontSize = useThemeStore((s) => s.fontSize);
 
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const decorationsRef = useRef<editor.IEditorDecorationsCollection | null>(
@@ -159,7 +160,7 @@ export function EditorArea() {
             options={{
               readOnly: true,
               minimap: { enabled: false },
-              fontSize: 13,
+              fontSize: fontSize,
               fontFamily: "'Cascadia Code', 'Fira Code', monospace",
               wordWrap: "on",
               scrollBeyondLastLine: false,
