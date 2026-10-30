@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import type { Terminal } from "@xterm/xterm";
 import { runCommand, saveToHistory } from "@/lib/terminal-commands";
 
-const PROMPT = "\x1b[38;2;255;92;0mfahim\x1b[0m:\x1b[38;2;220;38;38m~/portfolio\x1b[0m$ ";
+const PROMPT = "\x1b[38;2;235;65;0mfahim\x1b[0m:\x1b[38;2;220;38;38m~/portfolio\x1b[0m$ ";
 
 export function TerminalPanel() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,7 +35,7 @@ export function TerminalPanel() {
           theme: {
             background: "#0a0a0a",
             foreground: "#e0e0e0",
-            cursor: "#ff5c00",
+            cursor: "#eb4100",
           },
           fontSize: 13,
           fontFamily: "'Cascadia Code', monospace",
@@ -69,7 +69,7 @@ export function TerminalPanel() {
         resizeObserver.observe(el);
 
         term.writeln(
-          "\x1b[2mWelcome to Fahim's VS Code Terminal — type \x1b[38;2;255;92;0mhelp\x1b[0m to begin"
+          "\x1b[2mWelcome to Fahim's VS Code Terminal — type \x1b[38;2;235;65;0mhelp\x1b[0m to begin"
         );
         term.write("\r\n");
         term.write(PROMPT);

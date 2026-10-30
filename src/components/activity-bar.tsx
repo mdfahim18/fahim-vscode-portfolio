@@ -42,7 +42,7 @@ export function ActivityBar() {
           >
             <item.icon size={20} />
             {active && (
-              <div className="absolute left-0 top-0 h-full w-1 bg-[#ff5c00] rounded-r shadow-[0_0_8px_#ff5c00]" />
+              <div className="absolute left-0 top-0 h-full w-1 bg-[#eb4100] rounded-r shadow-[0_0_8px_#eb4100]" />
             )}
           </button>
         );

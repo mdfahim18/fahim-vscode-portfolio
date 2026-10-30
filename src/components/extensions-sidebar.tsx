@@ -42,7 +42,7 @@ const categories: Extension["category"][] = [
 
 function IconFor(name: string) {
   const Icon = iconMap[name] ?? Atom;
-  return <Icon className="h-5 w-5 text-blue-400" />;
+  return <Icon className="h-5 w-5 text-vs-accent" />;
 }
 
 export function ExtensionsSidebar({ onClose }: { onClose: () => void }) {
@@ -86,7 +86,7 @@ export function ExtensionsSidebar({ onClose }: { onClose: () => void }) {
               placeholder="Search Extensions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded bg-[#1e1e1e] pl-7 pr-2 py-1 text-sm text-gray-200 placeholder-gray-500 outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded bg-[#0f0f0f] pl-7 pr-2 py-1 text-sm text-gray-200 placeholder-gray-500 outline-none focus:ring-1 focus:ring-vs-accent"
             />
           </div>
         </div>
@@ -99,8 +99,8 @@ export function ExtensionsSidebar({ onClose }: { onClose: () => void }) {
               onClick={() => setActiveCategory(cat)}
               className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                 activeCategory === cat
-                  ? "bg-blue-500 text-white"
-                  : "bg-[#2d2d2d] text-gray-300 hover:bg-[#3a3a3a] hover:text-white"
+                  ? "bg-vs-accent text-white"
+                  : "bg-[#161616] text-gray-300 hover:bg-[#242424] hover:text-white"
               }`}
             >
               {cat}
@@ -133,7 +133,7 @@ export function ExtensionsSidebar({ onClose }: { onClose: () => void }) {
             Extension Details
           </div>
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-[#2d2d2d]">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-[#161616]">
               {IconFor(selectedExtension.icon)}
             </div>
             <div className="min-w-0 flex-1">
@@ -165,7 +165,7 @@ export function ExtensionsSidebar({ onClose }: { onClose: () => void }) {
               type="button"
               disabled
               title="Feature coming soon"
-              className="w-full rounded bg-blue-500 px-3 py-1 md:py-1.5 text-sm font-medium text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed blur-[0.5px]"
+              className="w-full rounded bg-vs-accent px-3 py-1 md:py-1.5 text-sm font-medium text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed blur-[0.5px]"
             >
               Hire Me
             </button>
@@ -173,7 +173,7 @@ export function ExtensionsSidebar({ onClose }: { onClose: () => void }) {
               Feature coming soon
             </p>
 
-            <div className="max-md:hidden rounded bg-[#1e1e1e] px-2 py-1.5 text-xs text-gray-400">
+            <div className="max-md:hidden rounded bg-[#0f0f0f] px-2 py-1.5 text-xs text-gray-400">
               <span>Want to hire me? Drop a line:</span>
               <code className="ml-1 text-gray-300">
                 mahmudulaminfahim@gmail.com
@@ -200,12 +200,12 @@ function ExtensionCard({
       onClick={onSelect}
       className={`relative w-full rounded border p-3 text-left transition-all ${
         isSelected
-          ? "border-blue-500 bg-[#1e2a3a]"
-          : "border-transparent bg-transparent hover:border-gray-600 hover:bg-[#2a2a2a]"
+          ? "border-vs-accent bg-[#1a0d05]"
+          : "border-transparent bg-transparent hover:border-[#333333] hover:bg-[#141414]"
       }`}
     >
       <div className="flex items-start gap-3">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded bg-[#2d2d2d]">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded bg-[#161616]">
           {IconFor(ext.icon)}
         </div>
         <div className="min-w-0 flex-1">

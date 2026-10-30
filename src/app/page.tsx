@@ -48,13 +48,13 @@ export default function VSCodePage() {
   const sidebarContent = renderSidebarContent(activeSidebarView);
 
   const hSeparator =
-    "w-1 bg-[#3c3c3c] hover:bg-blue-500 transition-colors cursor-col-resize";
+    "w-1 bg-[#262626] hover:bg-vs-accent transition-colors cursor-col-resize";
   const vSeparator =
-    "h-1 bg-[#3c3c3c] hover:bg-blue-500 transition-colors cursor-row-resize";
+    "h-1 bg-[#262626] hover:bg-vs-accent transition-colors cursor-row-resize";
 
   return (
     <div className="h-screen w-full overflow-hidden overflow-x-hidden flex">
-      <div className="relative z-50 w-12 shrink-0 bg-[#1e1e1e] border-r border-[#3c3c3c]">
+      <div className="relative z-50 w-12 shrink-0 bg-[#0a0a0a] border-r border-[#262626]">
         <ActivityBar />
       </div>
 
@@ -65,7 +65,7 @@ export default function VSCodePage() {
             className="fixed inset-0 left-12 z-40 bg-black/50"
             onClick={closeSidebar}
           />
-          <div className="absolute inset-y-0 left-12 z-50 h-full w-64 overflow-hidden rounded-r-lg border-r border-white/10 bg-[#252526]/85 shadow-2xl backdrop-blur-md">
+          <div className="absolute inset-y-0 left-12 z-50 h-full w-64 overflow-hidden rounded-r-lg border-r border-white/10 bg-[#0a0a0a]/85 shadow-2xl backdrop-blur-md">
             {sidebarContent}
           </div>
         </>
@@ -83,7 +83,7 @@ export default function VSCodePage() {
               defaultSize="20"
               minSize="15"
               maxSize="30"
-              className="overflow-hidden bg-[#251e20] border-r border-[#3c3c3c]"
+              className="overflow-hidden bg-[#0a0a0a] border-r border-[#262626]"
             >
               {sidebarContent}
             </Panel>
@@ -124,7 +124,7 @@ export default function VSCodePage() {
               defaultSize="20"
               minSize="15"
               maxSize="35"
-              className="overflow-hidden bg-[#1e1e1e] border-l border-[#3c3c3c]"
+              className="overflow-hidden bg-[#0a0a0a] border-l border-[#262626]"
             >
               <div className="h-full overflow-y-auto">
                 <AIAssistantPanel />

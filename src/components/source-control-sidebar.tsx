@@ -31,7 +31,7 @@ export function SourceControlSidebar({ onClose }: Props) {
           SOURCE CONTROL
         </span>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-medium text-blue-400 bg-blue-400/10 border border-blue-400/30 rounded px-1.5 py-0.5">
+          <span className="text-[10px] font-medium text-vs-accent bg-vs-accent/10 border border-vs-accent/30 rounded px-1.5 py-0.5">
             main
           </span>
           <button
