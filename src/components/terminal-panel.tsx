@@ -6,18 +6,40 @@ import type { Terminal } from "@xterm/xterm";
 import { runCommand, saveToHistory } from "@/lib/terminal-commands";
 import { useThemeStore, getTerminalTheme } from "@/store/theme-store";
 
-const PROMPT = "\x1b[38;2;235;65;0mfahim\x1b[0m:\x1b[38;2;220;38;38m~/portfolio\x1b[0m$ ";
+const BOLD = "\x1b[1m";
+const DIM = "\x1b[2m";
+const RESET = "\x1b[0m";
+
+function hexToRgb(hex: string) {
+  const clean = hex.replace("#", "");
+  return {
+    r: parseInt(clean.substring(0, 2), 16),
+    g: parseInt(clean.substring(2, 4), 16),
+    b: parseInt(clean.substring(4, 6), 16),
+  };
+}
+
+function buildPrompt(accent: string) {
+  const { r, g, b } = hexToRgb(accent);
+  return `\x1b[38;2;${r};${g};${b}mfahim:~/portfolio$ ${RESET}`;
+}
+
+function buildWelcome(accent: string) {
+  const { r, g, b } = hexToRgb(accent);
+  return `${DIM}Welcome to Fahim's VS Code Terminal — type ${RESET}${BOLD}\x1b[38;2;${r};${g};${b}mhelp${RESET}${DIM} to begin${RESET}`;
+}
 
 export function TerminalPanel() {
   const containerRef = useRef<HTMLDivElement>(null);
   const termRef = useRef<Terminal | null>(null);
+  const resetRef = useRef<((themeId: string) => void) | null>(null);
   const currentTheme = useThemeStore((s) => s.currentTheme);
 
   useEffect(() => {
     const term = termRef.current;
-    if (term) {
-      term.options.theme = getTerminalTheme(currentTheme);
-    }
+    if (!term) return;
+    term.options.theme = getTerminalTheme(currentTheme);
+    resetRef.current?.(currentTheme);
   }, [currentTheme]);
 
   useEffect(() => {
@@ -40,10 +62,10 @@ export function TerminalPanel() {
         if (disposed || !el || termRef.current) return;
         containerEl = el;
 
+        const initialTheme = useThemeStore.getState().currentTheme;
+
         term = new XTerm({
-          theme: getTerminalTheme(
-            useThemeStore.getState().currentTheme
-          ),
+          theme: getTerminalTheme(initialTheme),
           fontSize: 13,
           fontFamily: "'Cascadia Code', monospace",
           cursorBlink: true,
@@ -75,11 +97,22 @@ export function TerminalPanel() {
         });
         resizeObserver.observe(el);
 
-        term.writeln(
-          "\x1b[2mWelcome to Fahim's VS Code Terminal — type \x1b[38;2;235;65;0mhelp\x1b[0m to begin"
-        );
-        term.write("\r\n");
-        term.write(PROMPT);
+        const writeBanner = (themeId: string) => {
+          const accent = getTerminalTheme(themeId).cursor;
+          term!.writeln(buildWelcome(accent));
+          term!.write("\r\n");
+          term!.write(buildPrompt(accent));
+        };
+
+        resetRef.current = (themeId: string) => {
+          if (!term) return;
+          term.clear();
+          currentLine = "";
+          writeBanner(themeId);
+          term.scrollToBottom();
+        };
+
+        writeBanner(initialTheme);
         term.scrollToBottom();
 
         term.onData((data) => {
@@ -99,7 +132,10 @@ export function TerminalPanel() {
             }
 
             currentLine = "";
-            term!.write(PROMPT);
+            const accent = getTerminalTheme(
+              useThemeStore.getState().currentTheme
+            ).cursor;
+            term!.write(buildPrompt(accent));
             term!.scrollToBottom();
             setTimeout(() => term?.scrollToBottom(), 10);
             return;
@@ -138,6 +174,7 @@ export function TerminalPanel() {
       if (termRef.current === term) {
         termRef.current = null;
       }
+      resetRef.current = null;
     };
   }, []);
 

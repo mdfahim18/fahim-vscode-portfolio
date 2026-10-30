@@ -1,7 +1,4 @@
-const green = "\x1b[32m";
-const yellow = "\x1b[33m";
-const cyan = "\x1b[36m";
-const red = "\x1b[31m";
+const bold = "\x1b[1m";
 const dim = "\x1b[2m";
 const reset = "\x1b[0m";
 
@@ -12,15 +9,15 @@ export interface CommandResult {
 
 const HELP: CommandResult = {
   output: [
-    `${cyan}Available commands:${reset}`,
-    `  ${green}help${reset}            Show this help message`,
-    `  ${green}about${reset}           About Mahmudul Amin Fahim`,
-    `  ${green}skills${reset}          Technical skill set`,
-    `  ${green}projects${reset}        List portfolio projects`,
-    `  ${green}contact${reset}         How to get in touch`,
-    `  ${green}ls${reset}              List portfolio files`,
-    `  ${green}clear${reset}           Clear the terminal`,
-    `  ${green}sudo hire-fahim${reset} ${yellow}(careful...)${reset}`,
+    `${bold}Available commands:${reset}`,
+    `  ${bold}help${reset}            Show this help message`,
+    `  ${bold}about${reset}           About Mahmudul Amin Fahim`,
+    `  ${bold}skills${reset}          Technical skill set`,
+    `  ${bold}projects${reset}        List portfolio projects`,
+    `  ${bold}contact${reset}         How to get in touch`,
+    `  ${bold}ls${reset}              List portfolio files`,
+    `  ${bold}clear${reset}           Clear the terminal`,
+    `  ${bold}sudo hire-fahim${reset} ${dim}(careful...)${reset}`,
     "",
     `${dim}Tip: press Tab on 'sudo hire-fahim' for a shortcut.${reset}`,
   ],
@@ -28,7 +25,7 @@ const HELP: CommandResult = {
 
 const ABOUT: CommandResult = {
   output: [
-    `${cyan}Mahmudul Amin Fahim — Full Stack Developer${reset}`,
+    `${bold}Mahmudul Amin Fahim — Full Stack Developer${reset}`,
     "",
     "I'm a full stack developer from Bangladesh who loves",
     "clean architecture, fast products and great developer UX.",
@@ -41,7 +38,7 @@ const ABOUT: CommandResult = {
 
 const SKILLS: CommandResult = {
   output: [
-    `${cyan}Skills${reset}`,
+    `${bold}Skills${reset}`,
     `  Frontend : Next.js, React, Tailwind CSS, Framer Motion`,
     `  Backend  : Node.js, Express, Prisma, tRPC`,
     `  Tools    : Git, Docker, Vercel, PostgreSQL`,
@@ -51,12 +48,12 @@ const SKILLS: CommandResult = {
 
 const PROJECTS: CommandResult = {
   output: [
-    `${cyan}Projects${reset}`,
-    `  ${green}1.${reset} fahim-vscode-portfolio  ${dim}Next.js · TypeScript · Zustand${reset}`,
+    `${bold}Projects${reset}`,
+    `  ${bold}1.${reset} fahim-vscode-portfolio  ${dim}Next.js · TypeScript · Zustand${reset}`,
     `     A portfolio that works like VS Code (you are using it now)`,
-    `  ${green}2.${reset} saas-dashboard          ${dim}Next.js · Prisma · Stripe${reset}`,
+    `  ${bold}2.${reset} saas-dashboard          ${dim}Next.js · Prisma · Stripe${reset}`,
     `     Analytics dashboard with real-time charts and billing`,
-    `  ${green}3.${reset} ai-chat-client          ${dim}Next.js · Vercel AI SDK${reset}`,
+    `  ${bold}3.${reset} ai-chat-client          ${dim}Next.js · Vercel AI SDK${reset}`,
     `     Streaming chat UI with markdown + code highlighting`,
     "",
     `${dim}Source: https://github.com/mdfahim18${reset}`,
@@ -65,10 +62,10 @@ const PROJECTS: CommandResult = {
 
 const CONTACT: CommandResult = {
   output: [
-    `${cyan}Contact${reset}`,
+    `${bold}Contact${reset}`,
     `  Email    : mahmudulaminfahim@gmail.com`,
     `  Location : Bangladesh (UTC+6)`,
-    `  Status   : ${green}Available for freelance & full-time${reset}`,
+    `  Status   : ${bold}Available for freelance & full-time${reset}`,
     `  GitHub   : https://github.com/mdfahim18`,
     `  LinkedIn : https://www.linkedin.com/in/mahmudulaminfahim/`,
   ],
@@ -76,11 +73,11 @@ const CONTACT: CommandResult = {
 
 const LS: CommandResult = {
   output: [
-    `${cyan}explorer/fahim-portfolio${reset}`,
-    `  ${green}home.ts${reset}`,
-    `  ${green}about.ts${reset}`,
-    `  ${green}projects.ts${reset}`,
-    `  ${green}contact.ts${reset}`,
+    `${bold}explorer/fahim-portfolio${reset}`,
+    `  home.ts`,
+    `  about.ts`,
+    `  projects.ts`,
+    `  contact.ts`,
     "",
     `${dim}Open them from the sidebar →${reset}`,
   ],
@@ -88,9 +85,9 @@ const LS: CommandResult = {
 
 const HIRE_EGG: CommandResult = {
   output: [
-    `${yellow}We trust you have received a satisfactory introduction to Fahim.${reset}`,
+    `${bold}We trust you have received a satisfactory introduction to Fahim.${reset}`,
     "",
-    `${green}`,
+    `${bold}`,
     "  ______          _     _                 ",
     " |  ____|        (_)   (_)                ",
     " | |__ __ _ _ __  _ _____ _ __ ___        ",
@@ -99,14 +96,14 @@ const HIRE_EGG: CommandResult = {
     " |_|  \\__,_|_| |_|_/___|_|_| |_| |_|      ",
     `${reset}`,
     "",
-    `${green}Access granted. Let's build something great together.${reset}`,
+    `${bold}Access granted. Let's build something great together.${reset}`,
     `${dim}Ping him at mahmudulaminfahim@gmail.com — response time < 24h.${reset}`,
   ],
 };
 
 const UNKNOWN = (cmd: string): CommandResult => ({
   output: [
-    `${red}command not found:${reset} ${cmd}`,
+    `${bold}command not found:${reset} ${cmd}`,
     `${dim}Type 'help' to see available commands.${reset}`,
   ],
 });
@@ -131,7 +128,7 @@ export function runCommand(raw: string): CommandResult {
   if (input.startsWith("sudo")) {
     return {
       output: [
-        `${yellow}fahim is not in the sudoers file.${reset}`,
+        `${bold}fahim is not in the sudoers file.${reset}`,
         `${dim}This incident has been reported. (try: sudo hire-fahim)${reset}`,
       ],
     };
