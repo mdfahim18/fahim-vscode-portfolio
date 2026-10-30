@@ -111,7 +111,7 @@ export function SearchSidebar({ onClose }: { onClose: () => void }) {
                 }
                 className="flex w-full items-center gap-2 rounded px-2 py-1 text-left text-[13px] text-gray-200 hover:bg-vs-sidebar-item-hover-bg"
               >
-                <FileText size={14} className="text-blue-400 shrink-0" />
+                <FileText size={14} className="text-vs-accent shrink-0" />
                 <span className="min-w-0 flex-1 truncate">{file.fileName}</span>
                 <span className="ml-auto shrink-0 rounded-full bg-vs-tab-hover-bg px-1.5 text-[10px] text-gray-400">
                   {file.matches.length}
@@ -123,7 +123,7 @@ export function SearchSidebar({ onClose }: { onClose: () => void }) {
                   <button
                     key={match.lineNumber}
                     onClick={() => handleOpen(file.fileName, match.lineNumber)}
-                    className="flex w-full items-center gap-2 px-2 py-0.5 text-left text-xs text-gray-400 hover:bg-[#2a2d2e] cursor-pointer"
+                    className="flex w-full items-center gap-2 px-2 py-0.5 text-left text-xs text-gray-400 hover:bg-vs-sidebar-item-hover-bg cursor-pointer"
                   >
                     <span className="w-6 shrink-0 pr-2 text-right text-gray-500">
                       {match.lineNumber}

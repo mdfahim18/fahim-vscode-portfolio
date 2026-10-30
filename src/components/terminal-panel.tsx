@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import type { Terminal } from "@xterm/xterm";
 import { runCommand, saveToHistory } from "@/lib/terminal-commands";
 
-const PROMPT = "\x1b[32mfahim\x1b[0m:\x1b[34m~/portfolio\x1b[0m$ ";
+const PROMPT = "\x1b[38;2;255;92;0mfahim\x1b[0m:\x1b[38;2;220;38;38m~/portfolio\x1b[0m$ ";
 
 export function TerminalPanel() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -33,9 +33,9 @@ export function TerminalPanel() {
 
         term = new XTerm({
           theme: {
-            background: "#1e1e1e",
-            foreground: "#d4d4d4",
-            cursor: "#aeafad",
+            background: "#0a0a0a",
+            foreground: "#e0e0e0",
+            cursor: "#ff5c00",
           },
           fontSize: 13,
           fontFamily: "'Cascadia Code', monospace",
@@ -69,7 +69,7 @@ export function TerminalPanel() {
         resizeObserver.observe(el);
 
         term.writeln(
-          "\x1b[2mWelcome to Fahim's VS Code Terminal — type \x1b[32mhelp\x1b[0m to begin"
+          "\x1b[2mWelcome to Fahim's VS Code Terminal — type \x1b[38;2;255;92;0mhelp\x1b[0m to begin"
         );
         term.write("\r\n");
         term.write(PROMPT);
@@ -142,7 +142,7 @@ export function TerminalPanel() {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex items-center justify-between px-3 py-1 bg-[#2d2d30] border-b border-[#3c3c40] text-xs text-gray-400">
+      <div className="flex items-center justify-between px-3 py-1 bg-[#111111] border-b border-[#2a2a2a] text-xs text-gray-400">
         <span className="flex items-center gap-2">
           <TerminalIcon size={12} />
           <span className="text-white text-sm">TERMINAL</span>
