@@ -128,8 +128,8 @@ export function ExtensionsSidebar({ onClose }: { onClose: () => void }) {
 
       {/* Details panel */}
       {selectedExtension && (
-        <div className="border-t border-vs-border p-4 space-y-3">
-          <div className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+        <div className="border-t border-vs-border p-2 md:p-4 space-y-2 md:space-y-3 max-h-[35vh] md:max-h-none overflow-y-auto">
+          <div className="text-[10px] md:text-xs font-semibold text-gray-400 uppercase tracking-wide">
             Extension Details
           </div>
           <div className="flex items-start gap-3">
@@ -143,7 +143,7 @@ export function ExtensionsSidebar({ onClose }: { onClose: () => void }) {
               <div className="text-xs text-gray-500">
                 {selectedExtension.publisher} • v{selectedExtension.version}
               </div>
-              <div className="mt-1 text-xs text-gray-300">
+              <div className="mt-1 text-xs text-gray-300 break-words">
                 {selectedExtension.description}
               </div>
               <div className="mt-1 flex items-center gap-3 text-xs text-gray-500">
@@ -165,7 +165,7 @@ export function ExtensionsSidebar({ onClose }: { onClose: () => void }) {
               type="button"
               disabled
               title="Feature coming soon"
-              className="w-full rounded bg-blue-500 px-3 py-1.5 text-sm font-medium text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed blur-[0.5px]"
+              className="w-full rounded bg-blue-500 px-3 py-1 md:py-1.5 text-sm font-medium text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed blur-[0.5px]"
             >
               Hire Me
             </button>
@@ -173,7 +173,7 @@ export function ExtensionsSidebar({ onClose }: { onClose: () => void }) {
               Feature coming soon
             </p>
 
-            <div className="rounded bg-[#1e1e1e] px-2 py-1.5 text-xs text-gray-400">
+            <div className="max-md:hidden rounded bg-[#1e1e1e] px-2 py-1.5 text-xs text-gray-400">
               <span>Want to hire me? Drop a line:</span>
               <code className="ml-1 text-gray-300">
                 mahmudulaminfahim@gmail.com
