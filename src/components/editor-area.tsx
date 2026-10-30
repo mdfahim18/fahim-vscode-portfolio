@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import type { editor } from "monaco-editor";
 import { FileText, X } from "lucide-react";
 import { useEditorStore } from "@/store/editor-store";
+import { useThemeStore } from "@/store/theme-store";
+import { monacoThemes } from "@/data/monaco-themes";
 import { files } from "@/data/files";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
@@ -34,6 +36,7 @@ export function EditorArea() {
   const closeTab = useEditorStore((s) => s.closeTab);
   const updateContent = useEditorStore((s) => s.updateContent);
   const searchTarget = useEditorStore((s) => s.searchTarget);
+  const currentTheme = useThemeStore((s) => s.currentTheme);
 
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const decorationsRef = useRef<editor.IEditorDecorationsCollection | null>(
@@ -125,8 +128,18 @@ export function EditorArea() {
           <MonacoEditor
             height="100%"
             language={active.language}
-            theme="vs-dark"
+            theme={`theme-${currentTheme}`}
             value={contents[activeFile!] ?? active.content}
+            beforeMount={(monaco) => {
+              Object.entries(monacoThemes).forEach(([key, theme]) => {
+                monaco.editor.defineTheme(`theme-${key}`, {
+                  base: theme.base,
+                  inherit: theme.inherit,
+                  rules: theme.rules,
+                  colors: theme.colors,
+                });
+              });
+            }}
             onChange={(value) =>
               activeFile && updateContent(activeFile, value ?? "")
             }

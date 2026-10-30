@@ -4,12 +4,21 @@ import { Terminal as TerminalIcon, Trash2 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import type { Terminal } from "@xterm/xterm";
 import { runCommand, saveToHistory } from "@/lib/terminal-commands";
+import { useThemeStore, getTerminalTheme } from "@/store/theme-store";
 
 const PROMPT = "\x1b[38;2;235;65;0mfahim\x1b[0m:\x1b[38;2;220;38;38m~/portfolio\x1b[0m$ ";
 
 export function TerminalPanel() {
   const containerRef = useRef<HTMLDivElement>(null);
   const termRef = useRef<Terminal | null>(null);
+  const currentTheme = useThemeStore((s) => s.currentTheme);
+
+  useEffect(() => {
+    const term = termRef.current;
+    if (term) {
+      term.options.theme = getTerminalTheme(currentTheme);
+    }
+  }, [currentTheme]);
 
   useEffect(() => {
     let disposed = false;
@@ -32,11 +41,9 @@ export function TerminalPanel() {
         containerEl = el;
 
         term = new XTerm({
-          theme: {
-            background: "#0a0a0a",
-            foreground: "#e0e0e0",
-            cursor: "#eb4100",
-          },
+          theme: getTerminalTheme(
+            useThemeStore.getState().currentTheme
+          ),
           fontSize: 13,
           fontFamily: "'Cascadia Code', monospace",
           cursorBlink: true,
