@@ -68,14 +68,14 @@ function AccordionSection({
 }
 
 export function SettingsSidebar({ onClose }: { onClose: () => void }) {
-  const [openSection, setOpenSection] = useState<string>("color-theme");
+  const [openSection, setOpenSection] = useState<string | null>("color-theme");
 
   const currentTheme = useThemeStore((s) => s.currentTheme);
   const setTheme = useThemeStore((s) => s.setTheme);
   const closeSidebar = useUIStore((s) => s.closeSidebar);
 
   const toggleSection = (id: string) => {
-    setOpenSection((prev) => (prev === id ? "" : id));
+    setOpenSection((prev) => (prev === id ? null : id));
   };
 
   const handleSelect = (themeId: string) => {
@@ -105,7 +105,7 @@ export function SettingsSidebar({ onClose }: { onClose: () => void }) {
         <AccordionSection
           id="color-theme"
           title="Color Theme"
-          subtitle="Select your preferred editor and UI theme."
+          subtitle="Select your preferred editor theme."
           icon={<Palette size={13} className="text-vs-accent" />}
           isOpen={openSection === "color-theme"}
           onToggle={toggleSection}
@@ -150,6 +150,40 @@ export function SettingsSidebar({ onClose }: { onClose: () => void }) {
         {/* TODO: Font Size section (accordion) goes here */}
         {/* TODO: Font Weight section (accordion) goes here */}
         {/* TODO: Terminal, Editor, Tab Size, etc. sections go here */}
+        <DisabledSection title="Font Size" subtitle="Coming Soon" />
+        <DisabledSection title="Font Weight" subtitle="Coming Soon" />
+
+        <div className="px-3 py-2 text-[10px] text-gray-600">
+          More settings coming soon.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DisabledSection({
+  title,
+  subtitle,
+}: {
+  title: string;
+  subtitle: string;
+}) {
+  return (
+    <div className="border-b border-vs-border">
+      <div
+        className="flex w-full items-center gap-2 px-3 py-2 cursor-not-allowed opacity-50"
+        aria-disabled="true"
+        title="Coming Soon"
+      >
+        <span className="min-w-0 flex-1">
+          <span className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400">
+            {title}
+          </span>
+          <span className="block text-[11px] text-gray-600 truncate">
+            {subtitle}
+          </span>
+        </span>
+        <ChevronDown size={14} className="shrink-0 text-gray-600" />
       </div>
     </div>
   );
