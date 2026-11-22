@@ -10,6 +10,7 @@ export interface SearchTarget {
 interface EditorState {
   openTabs: string[];
   activeFile: string | null;
+  focusRequest: number;
   dirtyTabs: Set<string>;
   contents: Record<string, string>;
   searchTarget: SearchTarget | null;
@@ -23,6 +24,7 @@ interface EditorState {
 export const useEditorStore = create<EditorState>((set) => ({
   openTabs: [fileNames[0]],
   activeFile: fileNames[0],
+  focusRequest: 0,
   dirtyTabs: new Set<string>(),
   contents: Object.fromEntries(
     Object.entries(files).map(([name, file]) => [name, file.content])
@@ -32,10 +34,12 @@ export const useEditorStore = create<EditorState>((set) => ({
   openFile: (name) =>
     set((state) => {
       if (!files[name]) return state;
-      const openTabs = state.openTabs.includes(name)
-        ? state.openTabs
-        : [...state.openTabs, name];
-      return { openTabs, activeFile: name };
+      const alreadyOpen = state.openTabs.includes(name);
+      return {
+        activeFile: name,
+        openTabs: alreadyOpen ? state.openTabs : [...state.openTabs, name],
+        focusRequest: state.focusRequest + 1,
+      };
     }),
 
   closeTab: (name) =>
@@ -48,7 +52,12 @@ export const useEditorStore = create<EditorState>((set) => ({
       return { openTabs, activeFile };
     }),
 
-  setActiveFile: (name) => set({ activeFile: name }),
+  setActiveFile: (name) =>
+    set((state) =>
+      files[name]
+        ? { activeFile: name, focusRequest: state.focusRequest + 1 }
+        : state
+    ),
 
   updateContent: (name, value) =>
     set((state) => ({

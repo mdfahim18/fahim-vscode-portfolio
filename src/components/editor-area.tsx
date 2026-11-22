@@ -32,10 +32,10 @@ function fileColor(name: string) {
 export function EditorArea() {
   const openTabs = useEditorStore((s) => s.openTabs);
   const activeFile = useEditorStore((s) => s.activeFile);
+  const focusRequest = useEditorStore((s) => s.focusRequest);
   const contents = useEditorStore((s) => s.contents);
   const setActiveFile = useEditorStore((s) => s.setActiveFile);
   const closeTab = useEditorStore((s) => s.closeTab);
-  const updateContent = useEditorStore((s) => s.updateContent);
   const searchTarget = useEditorStore((s) => s.searchTarget);
   const currentTheme = useThemeStore((s) => s.currentTheme);
   const fontSize = useThemeStore((s) => s.fontSize);
@@ -48,6 +48,12 @@ export function EditorArea() {
   const decorationsRef = useRef<editor.IEditorDecorationsCollection | null>(
     null
   );
+
+  // Re-focus on every open/tab click, even when re-clicking the active file
+  // (in that case activeFile itself does not change).
+  useEffect(() => {
+    editorRef.current?.focus();
+  }, [focusRequest]);
 
   // Monaco caches font metrics. Force a re-measure whenever typography changes
   // so the editor actually re-renders with the new font settings.
@@ -149,6 +155,7 @@ export function EditorArea() {
         {active ? (
           <MonacoEditor
             height="100%"
+            path={activeFile ?? undefined}
             language={active.language}
             theme={`theme-${currentTheme}`}
             value={contents[activeFile!] ?? active.content}
@@ -163,9 +170,17 @@ export function EditorArea() {
                 });
               });
             }}
-            onChange={(value) =>
-              activeFile && updateContent(activeFile, value ?? "")
-            }
+            onChange={(value) => {
+              // Read the *current* file from the store instead of the render
+              // closure. Monaco's programmatic setValue fires onChange, and a
+              // stale closure would write the new file's text into the
+              // previously active file's entry.
+              const state = useEditorStore.getState();
+              const current = state.activeFile;
+              if (!current) return;
+              if (state.contents[current] === value) return;
+              state.updateContent(current, value ?? "");
+            }}
             onMount={(ed) => {
               editorRef.current = ed;
 
