@@ -25,9 +25,9 @@ const HELP: CommandResult = {
 
 const ABOUT: CommandResult = {
   output: [
-    `${bold}Mahmudul Amin Fahim — Full Stack Developer${reset}`,
+    `${bold}Mahmudul Amin Fahim — Software Engineer${reset}`,
     "",
-    "I'm a full stack developer from Bangladesh who loves",
+    "I'm a software engineer from Sylhet, Bangladesh who loves",
     "clean architecture, fast products and great developer UX.",
     "I spend most of my time in VS Code — which is why",
     "you're reading this portfolio inside one.",
@@ -64,7 +64,7 @@ const CONTACT: CommandResult = {
   output: [
     `${bold}Contact${reset}`,
     `  Email    : mahmudulaminfahim@gmail.com`,
-    `  Location : Bangladesh (UTC+6)`,
+    `  Location : Sylhet, Bangladesh (UTC+6)`,
     `  Status   : ${bold}Available for freelance & full-time${reset}`,
     `  GitHub   : https://github.com/mdfahim18`,
     `  LinkedIn : https://www.linkedin.com/in/mahmudulaminfahim/`,

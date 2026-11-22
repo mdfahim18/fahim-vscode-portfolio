@@ -1,7 +1,7 @@
 export const FAHIM_CONTEXT = `
 Name: Mahmudul Amin Fahim
-Role: Full Stack Developer
-Location: Bangladesh (UTC+6)
+Role: Software Engineer
+Location: Sylhet, Bangladesh (UTC+6)
 Email: mahmudulaminfahim@gmail.com
 GitHub: https://github.com/mdfahim18
 LinkedIn: https://www.linkedin.com/in/mahmudulaminfahim/

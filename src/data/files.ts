@@ -68,7 +68,7 @@ export const skills: Skills = {
 export const experience = [
   {
     company: "Freelance",
-    role: "Full Stack Developer",
+    role: "Software Engineer",
     period: "2023 - Present",
     highlights: [
       "Delivered 10+ production web apps for international clients",
@@ -149,7 +149,7 @@ export default projects;
 
 export const contact = {
   email: "mahmudulaminfahim@gmail.com",
-  location: "Bangladesh (UTC+6)",
+  location: "Sylhet, Bangladesh (UTC+6)",
   availability: "Available for freelance & full-time",
 };
 
