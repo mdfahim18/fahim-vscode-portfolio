@@ -12,14 +12,14 @@ export const files: Record<string, VirtualFile> = {
 
 export const developer = {
   name: "Mahmudul Amin Fahim",
-  role: "Full Stack Developer",
+  role: "Software Engineer",
   tagline: "I build production-grade web apps with Next.js & TypeScript.",
-  location: "Bangladesh",
+  location: "Sylhet, Bangladesh (UTC+6)",
   email: "mahmudulaminfahim@gmail.com",
   socials: {
     github: "https://github.com/mdfahim18",
     linkedin: "https://www.linkedin.com/in/mahmudulaminfahim/",
-    twitter: "https://twitter.com/mdfahim18",
+    twitter: "https://x.com/mahmudulfahim18",
   },
 } as const;
 
