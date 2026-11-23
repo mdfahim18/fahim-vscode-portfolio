@@ -105,31 +105,60 @@ export default { skills, experience, bio };
 export const projects: Project[] = [
   {
     id: 1,
-    name: "fahim-vscode-portfolio",
-    description:
-      "A production-level interactive portfolio that looks and works like VS Code, with a terminal, AI agent and Monaco editor.",
-    stack: ["Next.js 15", "TypeScript", "Tailwind CSS", "Zustand"],
-    stars: 128,
-    url: "https://github.com/mdfahim18/fahim-vscode-portfolio",
+    name: "Shopping Cart App",
+    description: "E-commerce web app with category filtering, sorting, price range, and a dynamic Redux-powered cart.",
+    stack: ["Next.js", "Redux Toolkit", "Tailwind CSS"],
+    stars: 0,
+    url: "https://my-react-cart-project1.netlify.app/",
   },
   {
     id: 2,
-    name: "saas-dashboard",
-    description:
-      "Analytics dashboard with real-time charts, role-based auth and multi-tenant billing.",
-    stack: ["Next.js", "Prisma", "PostgreSQL", "Stripe"],
-    stars: 87,
-    url: "https://github.com/mdfahim18",
+    name: "Weather App",
+    description: "Real-time weather app with location search, smart unit conversions (K→C, m/s→km/h), and dynamic day/night UI.",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS"],
+    stars: 0,
+    url: "https://nextjs-weather-app-indol.vercel.app/",
   },
   {
     id: 3,
-    name: "ai-chat-client",
-    description:
-      "Streaming chat UI built on the Vercel AI SDK with markdown + code highlighting.",
-    stack: ["Next.js", "Vercel AI SDK", "OpenAI"],
-    stars: 64,
+    name: "Shadcn Dashboard",
+    description: "A responsive and modern dashboard interface designed for web applications with clean data visualization.",
+    stack: ["Next.js", "React", "Tailwind CSS", "Shadcn UI"],
+    stars: 0,
+    url: "https://shadecn-dashboard-mu.vercel.app/",
+  },
+  {
+    id: 4,
+    name: "Car Showcase",
+    description: "Car catalogue with custom filters, search, and pagination, fetching real-time data from Rapid API.",
+    stack: ["Next.js", "Tailwind CSS", "Headless UI", "Rapid API"],
+    stars: 0,
+    url: "https://nextjs-car-showcase1.netlify.app/",
+  },
+  {
+    id: 5,
+    name: "Unsplash Image Gallery",
+    description: "A sleek image gallery app powered by the Unsplash API. Explore and search high-quality photos.",
+    stack: ["React", "Tailwind CSS", "Unsplash API"],
+    stars: 0,
+    url: "https://my-react-unsplash-image-project.netlify.app/",
+  },
+  {
+    id: 6,
+    name: "School Management System",
+    description: "Frontend app for managing school activities with NextAuth, Recharts for data visualization, and Redux Toolkit.",
+    stack: ["Next.js", "Tailwind CSS", "NextAuth", "Recharts", "Redux"],
+    stars: 0,
     url: "https://github.com/mdfahim18",
   },
+  {
+    id: 7,
+    name: "Anime Vault",
+    description: "Explore popular anime series with server-side rendering, infinite scroll, and a responsive masonry layout.",
+    stack: ["Next.js", "React", "Tailwind CSS", "Framer Motion"],
+    stars: 0,
+    url: "https://nextjs-anime-vault.netlify.app/",
+  }
 ];
 
 export function getProject(id: number): Project | undefined {
