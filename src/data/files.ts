@@ -67,12 +67,14 @@ export const skills: Skills = {
 
 export const experience = [
   {
-    company: "Freelance",
-    role: "Software Engineer",
-    period: "2023 - Present",
+    company: "DiviExpand",
+    role: "Software Engineer (Frontend)",
+    period: "Feb 2025 - Present",
     highlights: [
-      "Delivered 10+ production web apps for international clients",
-      "Specialized in Next.js App Router + TypeScript projects",
+      "Developed and published 'DiviAnimator', a GSAP-powered animation plugin for Divi 5, now live on the Elegant Themes Marketplace.",
+      "Designed 15+ custom extensions and 10+ interactive modules including Gravity Falling Elements (Matter.js), Marquee, Sticky Elements, and Cursor Follower.",
+      "Built custom admin panels using PHP and TypeScript to inject advanced animation settings into existing Divi modules.",
+      "Leveraged GSAP and Matter.js to build high-performance, physics-based animations and responsive visual effects with per-device controls.",
     ],
   },
 ];
