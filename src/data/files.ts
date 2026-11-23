@@ -192,11 +192,23 @@ export function validate(form: ContactForm): string[] {
   return errors;
 }
 
+// 💡 Tip: Run the "send" command in the integrated terminal below to test this mailer.
 export async function send(form: ContactForm): Promise<{ ok: boolean }> {
   const errors = validate(form);
   if (errors.length > 0) return { ok: false };
-  console.log("Sending message from", form.email);
-  return { ok: true };
+
+  try {
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    if (response.ok) return { ok: true };
+    return { ok: false };
+  } catch {
+    return { ok: false };
+  }
 }
 
 export default { contact, validate, send };

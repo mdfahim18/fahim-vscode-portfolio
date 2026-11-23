@@ -1,10 +1,13 @@
 const bold = "\x1b[1m";
 const dim = "\x1b[2m";
+const green = "\x1b[32m";
+const red = "\x1b[31m";
 const reset = "\x1b[0m";
 
 export interface CommandResult {
   output: string[];
   clear?: boolean;
+  followUp?: Promise<string[]>;
 }
 
 const HELP: CommandResult = {
@@ -125,6 +128,39 @@ export function runCommand(raw: string): CommandResult {
   if (input === "whoami") return { output: ["fahim"] };
   if (input === "date") return { output: [new Date().toString()] };
   if (input === "sudo hire-fahim" || input === "hire") return HIRE_EGG;
+
+  if (input === "send") {
+    return { output: [`Usage: send "Name" "Email" "Message"`] };
+  }
+
+  if (input.startsWith("send ")) {
+    const match = input.match(/^send\s+"([^"]*)"\s+"([^"]*)"\s+"([^"]*)"$/);
+
+    if (!match) {
+      return { output: [`Usage: send "Name" "Email" "Message"`] };
+    }
+
+    const [, name, email, message] = match;
+
+    return {
+      output: ["Sending message..."],
+      followUp: (async () => {
+        try {
+          const response = await fetch("/api/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, message }),
+          });
+
+          return response.ok
+            ? [`${green}✅ Message sent successfully!${reset}`]
+            : [`${red}❌ Failed to send message.${reset}`];
+        } catch {
+          return [`${red}❌ Failed to send message.${reset}`];
+        }
+      })(),
+    };
+  }
   if (input.startsWith("sudo")) {
     return {
       output: [

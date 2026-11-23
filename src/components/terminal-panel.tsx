@@ -132,12 +132,27 @@ export function TerminalPanel() {
             }
 
             currentLine = "";
-            const accent = getTerminalTheme(
-              useThemeStore.getState().currentTheme
-            ).cursor;
-            term!.write(buildPrompt(accent));
-            term!.scrollToBottom();
-            setTimeout(() => term?.scrollToBottom(), 10);
+
+            const writePrompt = () => {
+              const accent = getTerminalTheme(
+                useThemeStore.getState().currentTheme
+              ).cursor;
+              term!.write(buildPrompt(accent));
+              term!.scrollToBottom();
+              setTimeout(() => term?.scrollToBottom(), 10);
+            };
+
+            if (result.followUp) {
+              result.followUp
+                .then((lines) => {
+                  lines.forEach((l) => term!.writeln(l));
+                  term!.write("\r\n");
+                })
+                .finally(writePrompt);
+            } else {
+              writePrompt();
+            }
+
             return;
           }
 
