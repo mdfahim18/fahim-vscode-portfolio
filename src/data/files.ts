@@ -192,7 +192,8 @@ export function validate(form: ContactForm): string[] {
   return errors;
 }
 
-// 💡 Tip: Run the "send" command in the integrated terminal below to test this mailer.
+// 💡 Tip: Run the "send" command in the terminal below to test this mailer.
+// Usage: send "Name" "Email" "Message"
 export async function send(form: ContactForm): Promise<{ ok: boolean }> {
   const errors = validate(form);
   if (errors.length > 0) return { ok: false };
