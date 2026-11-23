@@ -8,7 +8,7 @@ LinkedIn: https://www.linkedin.com/in/mahmudulaminfahim/
 Availability: Open to freelance & full-time opportunities
 
 Summary:
-Fahim is a full stack developer who builds production-grade web apps with
+Fahim is a software engineer who builds production-grade web apps with
 Next.js and TypeScript. He focuses on clean architecture, fast products and
 great developer UX, and works primarily inside VS Code.
 
@@ -34,7 +34,9 @@ Projects:
    - URL: https://github.com/mdfahim18
 
 Experience:
-- Freelance Full Stack Developer (2023 - Present)
-  - Delivered 10+ production web apps for international clients.
-  - Specialized in Next.js App Router + TypeScript projects.
+- DiviExpand (Feb 2025 - Present)
+  - Developed and published 'DiviAnimator', a GSAP-powered animation plugin for Divi 5, now live on the Elegant Themes Marketplace.
+  - Designed 15+ custom extensions and 10+ interactive modules including Gravity Falling Elements (Matter.js), Marquee, Sticky Elements, and Cursor Follower.
+  - Built custom admin panels using PHP and TypeScript to inject advanced animation settings into existing Divi modules.
+  - Leveraged GSAP and Matter.js to build high-performance, physics-based animations and responsive visual effects with per-device controls.
 `.trim();

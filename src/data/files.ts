@@ -80,7 +80,7 @@ export const experience = [
 ];
 
 export function bio(): string {
-  return \`I'm a full stack developer from Bangladesh who loves
+  return \`I'm a software engineer from Sylhet, Bangladesh who loves
 clean architecture, fast products and great developer UX.
 I spend most of my time in VS Code — which is why
 you're reading this portfolio inside one.\`;
